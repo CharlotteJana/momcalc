@@ -3,7 +3,7 @@
 # "If the licenses are compatible you can copy and paste the exported function 
 #  into your own package. If you do this, remember to update Authors@R."
 #t1 Die Argumente upper, a, lower, b einheitlich verwenden!
-#t1 Brauche ich dtrunc und mtrunc wirklich? Wenn ich random.distribution weglasse, vielleicht ja nicht?
+#t1 Brauche ich dtrunc und mtrunc wirklich?
 
 #------ dtrunc & mtrunc ----------
 

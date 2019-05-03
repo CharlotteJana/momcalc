@@ -49,14 +49,6 @@ performs these checks, depending on the number of given distributions. A
 But a failure of these tests assures the distribution not to be unimodal.
 }
 \examples{
-### random example ###
-
-  unimodal.example <- function(lower = 0, upper = 10){
-    dis <- random.distribution(lower, upper)
-    is.unimodal(lower, upper, mmix(1:4, lower, upper, distrib = dis))
-  }
-  unimodal.example()
-
 ### mixture of two normal distributions ###
 
   d <- list(list("norm", mean = 3),

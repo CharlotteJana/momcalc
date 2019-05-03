@@ -23,8 +23,6 @@
 #' curve(d(x), -2, 5)
 #' @name dmix
 #' @aliases mmix
-#' @seealso \code{\link{random.distribution}} to plot a randomly created mixture
-#' of truncated distributions.
 #' @export
 dmix <- function(lower = -Inf, upper = Inf, distrib, weights){
   

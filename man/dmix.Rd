@@ -36,7 +36,3 @@ distributions <- list(list(spec="exp", rate = 2),
 d <- dmix(-1, 3, weights = c(.1,.3,.1), distrib = distributions)
 curve(d(x), -2, 5)
 }
-\seealso{
-\code{\link{random.distribution}} to plot a randomly created mixture
-of truncated distributions.
-}
