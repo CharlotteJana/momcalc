@@ -25,7 +25,7 @@ dfactorial <- function(n){
 #' 
 #' This function returns the multinomial coefficient of a natural number m
 #' and a vector of natrual numbers k.
-#' It is defined as \eqn{m!\(k[1]!*...*k[n]!)}, 
+#' It is defined as \eqn{\frac{m!}{k_1!\cdot ...\cdot k_n!}}{m!/(k[1]!*...*k[n]!)}, 
 #' where \code{n = length(k)} and \eqn{m!} stands for \code{factorial(m)}.
 #' 
 #' @param m a non negative, natural number

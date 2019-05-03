@@ -1,4 +1,4 @@
 library(testthat)
-library(pdmppoly)
+library(momcalc)
 
-test_check("pdmppoly")
+test_check("momcalc")

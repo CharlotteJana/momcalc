@@ -5,27 +5,30 @@
 #' The bimodal extension of the generalized Gamma-Distribution (BEGG) was first
 #' introduced by Bulut et. al. in 2015. It is a scale mixture of the
 #' generalized gamma distribution that is almost always bimodal.
-#' The two modes can have different shapes, depending on the parameters \eqn{α,
-#' β, δ0, δ1, η, ε, μ} and \eqn{σ}.
+#' The two modes can have different shapes, depending on the parameters 
+#' \eqn{\alpha, \beta, \delta_0, \delta_1, \eta, \epsilon, \mu}{α, β, δ0, δ1, η, ε, μ} 
+#' and \eqn{\sigma}{σ}.
 #' @param alpha a positive number. Controls the kurtosis of the distribution.
-#'   The distribution is leptokurtic for \eqn{α ϵ (0,2)} and β = 1. It is
-#'   platikurtic for \eqn{α > 2} and β = 1.
+#   The distribution is leptokurtic for \eqn{\alpha \in (0, 2)}{α ϵ (0,2)} and
+#'   \eqn{\beta = 1}{β = 1}. It is platikurtic for \eqn{\alpha > 2}{α > 2} and
+#'   \eqn{\beta = 1}{β = 1}.
 #' @param beta a positive number. Controls the kurtosis of the distribution.
-#' @param delta0 a positive number. Controls the bimodality. If \eqn{δ0 = δ1},
-#'   the density function will have two modes with the same height. If \eqn{δ0 =
-#'   δ1 = 0}, the distribution will be unimodal.
+#' @param delta0 a positive number. Controls the bimodality. If
+#'   \eqn{\delta_0 = \delta_1}{δ0 = δ1}, the density function will have two modes
+#'   with the same height. If \eqn{\delta_0 = \delta_1 = 1}{δ0 = δ1 = 0}, the
+#'   distribution will be unimodal.
 #' @param delta1 a positive number. Controls the bimodality.
 #' @param eta a positive number. Controls the tail thickness of the
 #'   distribution.
 #' @param eps numeric. Controls the skewness of the distribution. When
-#'   \eqn{ε = 0}, the distribution will be symmetric with two modes with
-#'   different height.
+#'   \eqn{\epsilon = 0}{ε = 0}, the distribution will be symmetric with two
+#'   modes with different height.
 #' @param mu numeric. The location parameter of the distribution. Defaults to 0.
 #' @param sigma a positive number. The scaling parameter of the distribution.
 #'   Defaults to 1.
-#' @param order integer vector. Specifies all orders for which the raw moments 
+#' @param order integer vector. Specifies all orders for which the raw moments
 #' shall be computed with \code{mBEGG}.
-#' @note This distribution is included in package \pkg{pdmppoly} because it is a 
+#' @note This distribution is included in package \pkg{momcalc} because it is a 
 #' good test case for function \code{\link{is.unimodal}} and the raw moments are
 #' known.
 #' @examples  

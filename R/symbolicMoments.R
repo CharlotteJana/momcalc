@@ -41,6 +41,7 @@
 #' @importFrom symmoments callmultmoments
 #' @importFrom stringr str_extract_all
 #' @importFrom spray linear
+#' @importFrom utils combn
 #' @export
 symbolicMoments <- function(distribution, missingOrders, mean = NA, cov = NA, var = NA){
   
@@ -136,7 +137,7 @@ symbolicMoments <- function(distribution, missingOrders, mean = NA, cov = NA, va
     
     # define parameters beta and A
     beta <- lapply(1:n, function(i) bquote(.(cov[[i]][[i]])/.(mean[[i]])))
-    A_indexes <- as.data.frame(t(cbind(combn(1:n, 2), matrix(rep(1:n, each = 2), nrow = 2))))
+    A_indexes <- as.data.frame(t(cbind(utils::combn(1:n, 2), matrix(rep(1:n, each = 2), nrow = 2))))
     A <- list()
     for(r in 1:nrow(A_indexes)){
       i <- A_indexes[r, 1]
@@ -190,7 +191,7 @@ symbolicMoments <- function(distribution, missingOrders, mean = NA, cov = NA, va
   }
   
   if(anyNA(missingMoments)){
-    stop("Closure method '", closure, "' is not implemented.")
+    stop("Distribution '", distribution, "' is not implemented.")
   }
   
   return(missingMoments)

@@ -17,11 +17,9 @@ Imports: actuar,
     dplyr,
     prodlim,
     Rdpack,
-    reshape2,
     spray,
     stringr,
-    symmoments,
-    tidyr
+    symmoments
 Suggests: testthat
 RdMacros: Rdpack
 Remotes: CharlotteJana/pdmpsim

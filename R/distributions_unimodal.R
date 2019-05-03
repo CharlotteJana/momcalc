@@ -34,11 +34,11 @@
 #' "4-b-unimodal".
 #' @example inst/examples/unimodal.R
 #' @references 
-#' \insertRef{TeuscherGuiard1994}{pdmppoly}
+#' \insertRef{TeuscherGuiard1994}{momcalc}
 #' 
-#' \insertRef{JohnsonRogers1951}{pdmppoly}
+#' \insertRef{JohnsonRogers1951}{momcalc}
 #' 
-#' \insertRef{SimpsonWelch1960}{pdmppoly}
+#' \insertRef{SimpsonWelch1960}{momcalc}
 #' @name is.unimodal
 #' @importFrom Rdpack reprompt
 #' @export

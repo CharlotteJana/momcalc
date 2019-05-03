@@ -1,6 +1,6 @@
 ##### transformMoment ####
 
-#' A help function for \code{\link{momApp}}
+#' Transform raw moments into central moments and vice versa
 #'
 #' Let X be a random variable and Y the corresponding centered variable, i.e. \eqn{Y = X - \mu}. 
 #' Let p be the \code{order} of the desired moment. 
@@ -20,20 +20,11 @@
 #'   \item \code{\link{transformMoment}(type = 'raw', ...)} if \code{k} is not a row in \code{rawMomentOrders}.
 #' }
 #' 
-#' @return This function returns an object of class 'momentList' with elements
-#' \itemize{
-#'   \item \code{centralMomentOrders}:
-#'   \item centralMoments
-#'   \item rawMomentOrders
-#'   \item rawMoments
-#'   \item closure
-#' }
-#' @param type string, either 'central' or 'raw'
+#' @return This function returns an object of class 'momentList'.
+#' 
 #' @param order numeric vector giving the order of the desired moment
-#' @param centralMomentOrders matrix. Every row gives the order of a central moment that is already known.
-#' @param centralMoments list. The i-th entry is the central Moment of order \code{centralMomentOrders[i, ]}.
-#' @param rawMomentOrders matrix. Every row gives the order of a raw moment that is already known.
-#' @param rawMoments list. The i-th entry is the raw Moment of order \code{rawMomentOrders[i, ]}.
+#' @param type string, either 'central' or 'raw'
+#' @param momentList object of class \code{\link{momentList}}.
 #' @param closure string giving the closure method to use if a central moment is unknown.
 transformMoment <- function(order, type, momentList, closure = "zero"){
   
@@ -43,6 +34,10 @@ transformMoment <- function(order, type, momentList, closure = "zero"){
   n <- length(p)
   otherType <- setdiff(c("central", "raw"), type) # if type = 'raw' then otherType = 'central' and vice versa
   k_indexes <- as.matrix(expand.grid(lapply(1:n, function(i) 0:p[i])))
+  
+  # to avoid the R CMD Check NOTE 'no visible binding for global variable ...'
+  typeOrders <- typeMoments <- otherOrders <- otherMoments <- NULL
+  k_in_typeOrders <- k_in_otherOrders <- NULL
 
   readMoments <- function(momentList, type){ # a help function to assign some values
     

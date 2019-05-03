@@ -13,6 +13,17 @@ momentList(rawMomentOrders = NULL, rawMoments = list(),
 
 \method{cov}{momentList}(x)
 }
+\arguments{
+\item{rawMomentOrders}{matrix. Every row gives the order of a raw moment that is already known.}
+
+\item{rawMoments}{list. The i-th entry is the raw Moment of order \code{rawMomentOrders[i, ]}.}
+
+\item{centralMomentOrders}{matrix. Every row gives the order of a central moment that is already known.}
+
+\item{centralMoments}{list. The i-th entry is the central Moment of order \code{centralMomentOrders[i, ]}.}
+
+\item{x}{object of class \code{momentList}}
+}
 \description{
 Create an object of class \code{momentList}.
 }

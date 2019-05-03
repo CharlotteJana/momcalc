@@ -2,7 +2,7 @@
 % Please edit documentation in R/transformMoment.R
 \name{transformMoment}
 \alias{transformMoment}
-\title{A help function for \code{\link{momApp}}}
+\title{Transform raw moments into central moments and vice versa}
 \usage{
 transformMoment(order, type, momentList, closure = "zero")
 }
@@ -11,25 +11,12 @@ transformMoment(order, type, momentList, closure = "zero")
 
 \item{type}{string, either 'central' or 'raw'}
 
+\item{momentList}{object of class \code{\link{momentList}}.}
+
 \item{closure}{string giving the closure method to use if a central moment is unknown.}
-
-\item{centralMomentOrders}{matrix. Every row gives the order of a central moment that is already known.}
-
-\item{centralMoments}{list. The i-th entry is the central Moment of order \code{centralMomentOrders[i, ]}.}
-
-\item{rawMomentOrders}{matrix. Every row gives the order of a raw moment that is already known.}
-
-\item{rawMoments}{list. The i-th entry is the raw Moment of order \code{rawMomentOrders[i, ]}.}
 }
 \value{
-This function returns an object of class 'momentList' with elements
-\itemize{
-  \item \code{centralMomentOrders}:
-  \item centralMoments
-  \item rawMomentOrders
-  \item rawMoments
-  \item closure
-}
+This function returns an object of class 'momentList'.
 }
 \description{
 Let X be a random variable and Y the corresponding centered variable, i.e. \eqn{Y = X - \mu}. 
