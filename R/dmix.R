@@ -1,6 +1,3 @@
-
-#------ dmix & mmix ----------
-
 #' Mixtures of truncated distributions
 #' 
 #' Compute the distribution (\code{dmix}) and raw moments (\code{mmix}) of a
