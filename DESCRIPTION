@@ -1,0 +1,27 @@
+Package: momcalc
+Type: Package
+Title: Symbolic moment calculation
+Version: 0.0-1
+Author: Charlotte Jana
+Maintainer: Charlotte Jana <charlotte.jana@t-online.de>
+Description: Caculate the moments of a normal, lognormal or gamma distribution
+    symbolically. The distribution may be multivariate. Additionally, a method
+    to numerically calculate samples or moments of the BEGG distribution are
+    provided and a test for the unimodality of a one dimensional distribution
+    based on the moments of that distribution.
+License: GPL(>= 2)
+Encoding: UTF-8
+LazyData: true
+Depends: R (>= 2.10)
+Imports: actuar,
+    dplyr,
+    prodlim,
+    Rdpack,
+    reshape2,
+    stringr,
+    symmoments,
+    tidyr
+Suggests: testthat
+RdMacros: Rdpack
+Remotes: CharlotteJana/pdmpsim
+RoxygenNote: 6.1.1
