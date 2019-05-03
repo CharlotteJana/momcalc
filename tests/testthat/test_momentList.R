@@ -14,7 +14,6 @@ test_that("mean works", {
 })
 
 test_that("cov works for n > 1", {
-  skip("besser cov testen als cov.momentList")
   
   mList <- structure(list(rawMomentOrders = rbind(1:3, diag(3), 4:6),
                           rawMoments = list("A", "m1", "m2", "m3", "B"),
@@ -22,7 +21,7 @@ test_that("cov works for n > 1", {
                           centralMoments = as.list(letters, "lastElement")),
                      class = "momentList")
   
-  cov <- cov.momentList(mList)
+  cov <- cov(mList)
   expect_equal(cov, list(list("c", "e", "k"),
                          list("e", "g", "m"),
                          list("k", "m", "s")))
@@ -34,14 +33,13 @@ test_that("cov uses transformMoment appropriately", {
   mList <- momentList(rawMomentOrders = expand.grid(list(0:2, 0:2)),
                       rawMoments = as.list(letters[1:9]))
   
-  cov <- cov.momentList(mList)
+  cov <- cov(mList)
   expect_equal(cov, list(list("c", "e", "k"),
                          list("e", "g", "m"),
                          list("k", "m", "s")))
 })
 
 test_that("cov works for n = 1", {
-  skip("besser cov testen als cov.momentList")
   
   mList <- structure(list(rawMomentOrders = cbind(c(3, 1, 5)),
                           rawMoments = list("A", "m1", "B"),
@@ -49,6 +47,6 @@ test_that("cov works for n = 1", {
                           centralMoments = list(1, 0, "C")),
                      class = "momentList")
   
-  cov <- cov.momentList(mList)
+  cov <- cov(mList)
   expect_equal(cov, list(list("C")))
 })

@@ -1,6 +1,9 @@
-#t1 Überall cov.momentList durch cov ersetzen
 
-#' @name momentList
+#' Class momentList
+#' 
+#' Create an object of class \code{momentList}.
+#' 
+#' @export
 momentList <- function(rawMomentOrders = NULL,
                        rawMoments = list(),
                        centralMomentOrders = NULL,
@@ -27,7 +30,7 @@ momentList <- function(rawMomentOrders = NULL,
   return(mList)
 }
 
-#' @describeIn momentList
+# #' @describeIn momentList validate an object of class \code{momentList}
 validate_momentList <- function(x){
   
   stopifnot(is.list(x$rawMoments))
@@ -102,7 +105,36 @@ validate_momentList <- function(x){
   return(x)
 }
 
-#' @describeIn momentList
+####### mean ######
+
+#' @describeIn momentList pick means out of momentList
+mean.momentList <- function(x){
+  n <- ncol(x$rawMomentOrders)
+  mean <- list()
+  
+  for(i in 1:n){
+    row <- rep(0, n)
+    row[i] <- 1
+    mean[[i]] <- x$rawMoments[[prodlim::row.match(row, x$rawMomentOrders)]]
+  }
+  
+  return(mean)
+}
+
+##### cov #####
+
+cov <- function(x, y = NULL, use = "everything", 
+                method = c("pearson", "kendall", "spearman"), ...){
+  UseMethod("cov")
+}
+
+cov.default <- function(x, y = NULL, use = "everything", 
+                        method = c("pearson", "kendall", "spearman"), ...){
+   stats::cov(x, y = NULL, use = "everything", 
+              method = c("pearson", "kendall", "spearman"), ...)
+}
+
+#' @describeIn momentList pick covariances out of momentList
 cov.momentList <- function(x){
   
   n <- ifelse(length(x$centralMoments) > 0, 
@@ -138,16 +170,3 @@ cov.momentList <- function(x){
   return(cov)  
 }
 
-#' @describeIn momentList
-mean.momentList <- function(x){
-  n <- ncol(x$rawMomentOrders)
-  mean <- list()
-  
-  for(i in 1:n){
-    row <- rep(0, n)
-    row[i] <- 1
-    mean[[i]] <- x$rawMoments[[prodlim::row.match(row, x$rawMomentOrders)]]
-  }
-  
-  return(mean)
-}

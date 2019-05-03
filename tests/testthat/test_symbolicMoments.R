@@ -50,7 +50,7 @@ test_that("distribution = 'normal' works", {
                           missingOrders = as.matrix(1:8, ncol = 1))
   mom1 <- sapply(mom1, eval)
   mom2 <- actuar::mnorm(1:8, mean = 0, sd = 2)
-  expect_identical(mom1, mom2)
+  expect_equal(mom1, mom2)
   
 })
 

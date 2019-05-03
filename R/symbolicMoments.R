@@ -40,6 +40,7 @@
 #' should be satisfied for all i in 1:n.
 #' @importFrom symmoments callmultmoments
 #' @importFrom stringr str_extract_all
+#' @importFrom spray linear
 #' @export
 symbolicMoments <- function(distribution, missingOrders, mean = NA, cov = NA, var = NA){
   
@@ -156,7 +157,7 @@ symbolicMoments <- function(distribution, missingOrders, mean = NA, cov = NA, va
       polynomials <- list()
       for(j in 1:n){
         poly_indexes <- rowSums(apply(A_indexes, 2, match, j, nomatch = 0)) >= 1
-        polynomials <- append(polynomials, list(linear(as.numeric(poly_indexes), 1)^order[j]))
+        polynomials <- append(polynomials, list(spray::linear(as.numeric(poly_indexes), 1)^order[j]))
       }
       polynomials <- Reduce('*', polynomials)
       summands <- list()

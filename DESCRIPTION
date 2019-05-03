@@ -18,6 +18,7 @@ Imports: actuar,
     prodlim,
     Rdpack,
     reshape2,
+    spray,
     stringr,
     symmoments,
     tidyr
