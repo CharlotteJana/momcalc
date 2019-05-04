@@ -27,6 +27,8 @@
 #' \item \code{"lognormal"} calculates the raw moments of a multivariate lognormal distribution,
 #' \item \code{"gamma"} calculates the raw moments of a multivariate gamma distribution.
 #' } 
+#' @param simplify bool indiciating if the resulting expressions should be simplified.
+#' Function \code{\link[Deriv]{Simplify}} from package \pkg{Deriv} is used for simplification.
 #' @return A list where each element is a quoted expression.
 #' The i-th element of this list gives a formula for the
 #' moment whose order is given in the i-th row of \code{missingOrders}.
@@ -39,11 +41,12 @@
 #' \eqn{mean[i] > \sum_{k \neq i} \frac{mean[k]*cov[i,k]}{cov[i,i]}}
 #' should be satisfied for all i in 1:n.
 #' @importFrom symmoments callmultmoments
-#' @importFrom stringr str_extract_all
+#' @importFrom stringr str_extract_all str_remove_all
 #' @importFrom spray linear
 #' @importFrom utils combn
+#' @importFrom Deriv Simplify
 #' @export
-symbolicMoments <- function(distribution, missingOrders, mean = NA, cov = NA, var = NA){
+symbolicMoments <- function(distribution, missingOrders, mean = NA, cov = NA, var = NA, simplify = TRUE){
   
   # definitions
   if(is.vector(missingOrders))
@@ -97,7 +100,6 @@ symbolicMoments <- function(distribution, missingOrders, mean = NA, cov = NA, va
         missingMoments[[i]] <- momFormula
       }
     }
-    return(missingMoments)
   }
   
   # lognormal
@@ -193,6 +195,11 @@ symbolicMoments <- function(distribution, missingOrders, mean = NA, cov = NA, va
   if(anyNA(missingMoments)){
     stop("Distribution '", distribution, "' is not implemented.")
   }
-  
+  if(simplify){
+    missingMoments <- lapply(missingMoments, function(m){
+      string <- stringr::str_remove_all(pattern = "\"", string = format(m))
+      str2lang(Deriv::Simplify(string))
+      })
+  }
   return(missingMoments)
 }

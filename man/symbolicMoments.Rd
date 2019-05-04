@@ -5,7 +5,7 @@
 \title{Symbolic calculation of moments}
 \usage{
 symbolicMoments(distribution, missingOrders, mean = NA, cov = NA,
-  var = NA)
+  var = NA, simplify = TRUE)
 }
 \arguments{
 \item{distribution}{string specifying the (multivariate) distribution
@@ -29,6 +29,9 @@ respectivly) should contain a value for the covariance \eqn{Cov(X_i, X_j)}.}
 \item{var}{optional. If \code{n = 1}, \code{cov} would only
 contain one entry - the variance \eqn{Var(X)}. This value can be passed
 to parameter \code{var} instead of \code{cov}.}
+
+\item{simplify}{bool indiciating if the resulting expressions should be simplified.
+Function \code{\link[Deriv]{Simplify}} from package \pkg{Deriv} is used for simplification.}
 }
 \value{
 A list where each element is a quoted expression.
