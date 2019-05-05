@@ -6,12 +6,14 @@
 \alias{mBEGG}
 \title{Bimodal extension of the generalized Gamma-Distribution}
 \usage{
-dBEGG(alpha, beta, delta0, delta1, eta, eps, mu = 0, sigma = 1)
+dBEGG(x, alpha, beta, delta0, delta1, eta, eps, mu = 0, sigma = 1)
 
 mBEGG(alpha, beta, delta0, delta1, eta, eps, mu = 0, sigma = 1,
   order = 1:4)
 }
 \arguments{
+\item{x}{vector of quantiles.}
+
 \item{alpha}{a positive number. Controls the kurtosis of the distribution.
 \eqn{\beta = 1}{β = 1}. It is platikurtic for \eqn{\alpha > 2}{α > 2} and
 \eqn{\beta = 1}{β = 1}.}
@@ -62,17 +64,22 @@ known.
 }
 \examples{
  
-# The first 3 examples are the same as in the paper:
-ex1 <- dBEGG(alpha = 2, beta = 2, delta0 = 1, delta1 = 4, eta = 1, eps = 0)
-ex2 <- dBEGG(alpha = 2, beta = 1, delta0 = 0, delta1 = 2, eta = 1, eps = -0.5)
-ex3 <- dBEGG(alpha = 3, beta = 2, delta0 = 4, delta1 = 2, eta = 2, eps = 0.3)
-ex4 <- dBEGG(alpha = 2, beta = 1, delta0 = 0, delta1 = 0, eta = 1, eps = 0.7)
 
+# The first 3 examples are the same as in the paper:#'
 par(mfrow=c(2, 2))
-curve(ex1(x), -2, 2)
-curve(ex2(x), -2, 3)
-curve(ex3(x), -2.5, 1.5)
-curve(ex4(x), -2, 2)
+x <- seq(-2, 2, .01)
+y <- dBEGG(x, alpha = 2, beta = 2, delta0 = 1, delta1 = 4, eta = 1, eps = 0)
+plot(x, y, type = "l", ylab = "")
+x <- seq(-2, 3, .01)
+y <- dBEGG(x, alpha = 2, beta = 1, delta0 = 0, delta1 = 2, eta = 1, eps = -0.5)
+plot(x, y, type = "l", ylab = "")
+x <- seq(-2.5, 1.5, .01)
+y <- dBEGG(x, alpha = 3, beta = 2, delta0 = 4, delta1 = 2, eta = 2, eps = 0.3)
+plot(x, y, type = "l", ylab = "")
+x <- seq(-2, 2, .01)
+y <- dBEGG(x, alpha = 2, beta = 1, delta0 = 0, delta1 = 0, eta = 1, eps = 0.7)
+plot(x, y, type = "l", ylab = "")
+
 }
 \references{
 Çankaya, M. N.; Bulut, Y. M.;  Doğru, F. Z. & Arslan, O.(2015). A

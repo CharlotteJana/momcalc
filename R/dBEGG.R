@@ -8,6 +8,7 @@
 #' The two modes can have different shapes, depending on the parameters 
 #' \eqn{\alpha, \beta, \delta_0, \delta_1, \eta, \epsilon, \mu}{α, β, δ0, δ1, η, ε, μ} 
 #' and \eqn{\sigma}{σ}.
+#' @param x vector of quantiles.
 #' @param alpha a positive number. Controls the kurtosis of the distribution.
 #   The distribution is leptokurtic for \eqn{\alpha \in (0, 2)}{α ϵ (0,2)} and
 #'   \eqn{\beta = 1}{β = 1}. It is platikurtic for \eqn{\alpha > 2}{α > 2} and
@@ -32,17 +33,22 @@
 #' good test case for function \code{\link{is.unimodal}} and the raw moments are
 #' known.
 #' @examples  
-#' # The first 3 examples are the same as in the paper:
-#' ex1 <- dBEGG(alpha = 2, beta = 2, delta0 = 1, delta1 = 4, eta = 1, eps = 0)
-#' ex2 <- dBEGG(alpha = 2, beta = 1, delta0 = 0, delta1 = 2, eta = 1, eps = -0.5)
-#' ex3 <- dBEGG(alpha = 3, beta = 2, delta0 = 4, delta1 = 2, eta = 2, eps = 0.3)
-#' ex4 <- dBEGG(alpha = 2, beta = 1, delta0 = 0, delta1 = 0, eta = 1, eps = 0.7)
-#'
+#' 
+#' # The first 3 examples are the same as in the paper:#'
 #' par(mfrow=c(2, 2))
-#' curve(ex1(x), -2, 2)
-#' curve(ex2(x), -2, 3)
-#' curve(ex3(x), -2.5, 1.5)
-#' curve(ex4(x), -2, 2)
+#' x <- seq(-2, 2, .01)
+#' y <- dBEGG(x, alpha = 2, beta = 2, delta0 = 1, delta1 = 4, eta = 1, eps = 0)
+#' plot(x, y, type = "l", ylab = "")
+#' x <- seq(-2, 3, .01)
+#' y <- dBEGG(x, alpha = 2, beta = 1, delta0 = 0, delta1 = 2, eta = 1, eps = -0.5)
+#' plot(x, y, type = "l", ylab = "")
+#' x <- seq(-2.5, 1.5, .01)
+#' y <- dBEGG(x, alpha = 3, beta = 2, delta0 = 4, delta1 = 2, eta = 2, eps = 0.3)
+#' plot(x, y, type = "l", ylab = "")
+#' x <- seq(-2, 2, .01)
+#' y <- dBEGG(x, alpha = 2, beta = 1, delta0 = 0, delta1 = 0, eta = 1, eps = 0.7)
+#' plot(x, y, type = "l", ylab = "")
+#'
 #' @references Çankaya, M. N.; Bulut, Y. M.;  Doğru, F. Z. & Arslan, O.(2015). A
 #' bimodal extension of the generalized gamma distribution. \emph{Revista
 #' Colombiana de Estadística}, 38(2), 371-384.
@@ -52,7 +58,7 @@ NULL
 
 #' @describeIn BEGG density function
 #' @export
-dBEGG <- function(alpha, beta, delta0, delta1, eta, eps, mu = 0, sigma = 1){
+dBEGG <- function(x, alpha, beta, delta0, delta1, eta, eps, mu = 0, sigma = 1){
   a0 <- (delta0+1)/alpha
   a1 <- (delta1+1)/alpha
   f <- function(x){
@@ -68,7 +74,7 @@ dBEGG <- function(alpha, beta, delta0, delta1, eta, eps, mu = 0, sigma = 1){
         (eta ^ beta * ((1 + eps) * sigma) ^ (alpha * beta))))
     } 
   }
-  function(x) sapply(x, f)
+  sapply(x, f)
 }
 
 #' @describeIn BEGG raw moments
