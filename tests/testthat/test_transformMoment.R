@@ -420,7 +420,28 @@ test_that("transformMoment works with a missing moment in the middle and at the 
   
 })
 
+test_that("transformMoment needs raw moments of order 1 as input", {
+  mList <- structure(list(rawMomentOrders = 2*diag(3),
+                          rawMoments = list("m1", "m2", "m3"),
+                          centralMomentOrders = expand.grid(list(0:1, 0:1, 0:2)),
+                          centralMoments = as.list(letters[1:12])),
+                     class = "momentList")
+  
+  expect_error(suppressWarnings(
+    transformMoment(order = c(1,1,2),
+                    type = 'raw',
+                    closure = "",
+                    momentList = mList)
+  ))
+  
+  expect_error(suppressWarnings(
+    transformMoment(order = c(5,3,2),
+                    type = 'central',
+                    closure = "",
+                    momentList = mList)
+  ))
+})
+
 test_that("transformMoment does not need central moments of order 0 and 1 as input", {
   skip("not implemented yet")
 })
-

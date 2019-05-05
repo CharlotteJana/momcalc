@@ -24,7 +24,7 @@
 dmix <- function(lower = -Inf, upper = Inf, distrib, weights){
   
   n <- length(distrib)
-  if(missing(weights)) weights = rep(1/n, n)
+  if(missing(weights)) weights <- rep(1/n, n)
   
   weights <- weights/sum(weights)
   function(x){
@@ -39,11 +39,10 @@ dmix <- function(lower = -Inf, upper = Inf, distrib, weights){
 #' @param order order of the moment
 #' @rdname dmix
 #' @export
-mmix <- function(order, lower = -Inf, upper = Inf, distrib, weights){
+mmix <- function(order = 1:4, lower = -Inf, upper = Inf, distrib, weights){
   
   n <- length(distrib)
-  if(missing(order)) order = 1:4
-  if(missing(weights)) weights = rep(1/n, n)
+  if(missing(weights)) weights <- rep(1/n, n)
   
   weights <- weights/sum(weights)
   h <- sapply(1:n, function(i) 

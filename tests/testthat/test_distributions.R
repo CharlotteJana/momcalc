@@ -3,10 +3,12 @@ context("distributions")
 test_that("mtrunc works as expected", {
   expect_identical(mtrunc(spec = "exp", order = 5), 
                    actuar::mexp(order = 5))
-  expect_identical(mtrunc(spec = "norm", order = 3, mean = 4), 
-                   actuar::mnorm(order = 3, mean = 4))
+  expect_identical(mtrunc(spec = "lnorm", order = 3, meanlog = 4), 
+                   actuar::mlnorm(order = 3, meanlog = 4))
   expect_equal(mtrunc(spec = "norm", order = 1:2, a = -2, b = 2),
                c(0, 0.774), tolerance = 1e-3)
+  expect_error(mtrunc(spec = "unif", order = 1:3, a = 3, b = 1, min = 0, max = 1))
+  expect_error(mtrunc(spec = "unif", order = 1:3, a = 3, b = 1))
 })
 
 test_that("dtrunc works as expected", {
@@ -18,6 +20,7 @@ test_that("dtrunc works as expected", {
                    2*exp(-x*2)/(1-exp(-10)))
   expect_warning(d <- dtrunc(x, spec = "norm", a = 20, b = 30))
   expect_identical(d, rep(0, length(x)))
+  expect_error(dtrunc(x, sepec = "unif", a = 30, b = 0))
 })
 
 test_that("dmix works as expected", {

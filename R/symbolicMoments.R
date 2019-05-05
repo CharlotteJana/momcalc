@@ -182,17 +182,6 @@ symbolicMoments <- function(distribution, missingOrders, mean = NA, cov = NA, va
     }
   }
   
-  # normal for one dimensional variable
-  if(distribution == "normal1d" & n == 1){
-    for(i in seq_len(nrow(missingOrders))){
-      order <- as.numeric(missingOrders[i, 1])
-      variance <- cov[[i]][[1]]
-      missingMoments[[i]] <- switch(order %% 2,
-                                    bquote(.(variance)^.(order)*.(dfactorial(order-1))),
-                                    0)
-    }
-  }
-  
   if(anyNA(missingMoments)){
     stop("Distribution '", distribution, "' is not implemented.")
   }
