@@ -26,7 +26,10 @@
 #' @param type string, either 'central' or 'raw'
 #' @param momentList object of class \code{\link{momentList}}.
 #' @param closure string giving the closure method to use if a central moment is unknown.
-transformMoment <- function(order, type, momentList, closure = "zero"){
+#' @param simplify bool indiciating if the resulting expressions should be simplified.
+#' Function \code{\link[Deriv]{Simplify}} from package \pkg{Deriv} is used for simplification.
+#' @importFrom Deriv Simplify
+transformMoment <- function(order, type, momentList, closure = "zero", simplify = TRUE){
   
   momentList <- validate_momentList(momentList)
   
@@ -115,7 +118,8 @@ transformMoment <- function(order, type, momentList, closure = "zero"){
       momentList <- transformMoment(order = k, 
                                     type = otherType, 
                                     momentList = momentList, 
-                                    closure = closure)
+                                    closure = closure,
+                                    simplify = simplify)
       readMoments(momentList, type)
     }
     # if k is a row in otherMomentOrders
@@ -137,6 +141,10 @@ transformMoment <- function(order, type, momentList, closure = "zero"){
     sum[[k_index]] <- summand
   }
   sum <- Reduce(function(a,b) bquote(.(a)+.(b)), sum)
+  if(simplify){
+    sum <- stringr::str_remove_all(pattern = "\"", string = format(sum))
+    sum <- str2lang(Deriv::Simplify(sum))
+  }
   
   if(type == 'raw'){
     momentList$rawMomentOrders <- rbind(typeOrders, p)

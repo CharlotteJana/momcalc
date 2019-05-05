@@ -14,7 +14,8 @@ test_that("transformMoment works for n = 3, type = 'raw' and all central moments
     res1 <- transformMoment(order = c(1,1,2),
                             type = 'raw',
                             closure = "",
-                            momentList = mList)
+                            momentList = mList,
+                            simplify = FALSE)
   )
   
   momentRaw <- quote(1 * ("m1"^1 * "m2"^1 * "m3"^2) * ("a") + 
@@ -39,6 +40,9 @@ test_that("transformMoment works for n = 3, type = 'raw' and all central moments
                     class = "momentList")
   
   expect_equal(res1, res2, check.attributes = FALSE)
+  
+  
+  
 })
 
 
@@ -54,7 +58,8 @@ test_that("transformMoment works for n = 3, type = 'central' and all raw moments
   res1 <- transformMoment(order = c(1,1,2),
                           type = 'central',
                           closure = "",
-                          momentList = mList)
+                          momentList = mList,
+                          simplify = FALSE)
   )
   
   momentCentr <- quote(1 * ("b"^1 * "c"^1 * "e"^2) * ("a") + 
@@ -101,7 +106,14 @@ test_that("transformMoment works with only the last moment(s) missing", {
   res1 <- transformMoment(order = c(1,2),
                           type = 'raw',
                           closure = "zero",
-                          momentList = mList)
+                          momentList = mList,
+                          simplify = FALSE)
+  
+  res1Simplified <- transformMoment(order = c(1,2),
+                                    type = 'raw',
+                                    closure = "zero",
+                                    momentList = mList,
+                                    simplify = TRUE)
   
   momentRaw <- quote(1 * ("m1"^1 * "m2"^2) * (1) + 
                      1 * ("m1"^0 * "m2"^2) * (0) + 
@@ -110,20 +122,31 @@ test_that("transformMoment works with only the last moment(s) missing", {
                      1 * ("m1"^1 * "m2"^0) * ("b") + 
                      1 * ("m1"^0 * "m2"^0) * (0))
   
+  momentRawSimplified <- quote(b * m1 + m2 * (2 * a + m1 * m2))
+  
   res2 <- structure(list(rawMomentOrders = rbind(rOrders, c(1, 2)),
                          rawMoments = append(rMoments, momentRaw),
                          centralMomentOrders = rbind(cOrders, c(1,2)),
                          centralMoments = append(cMoments, 0)),
                     class = "momentList")
   
+  res2Simplified <- structure(list(rawMomentOrders = rbind(rOrders, c(1, 2)),
+                         rawMoments = append(rMoments, momentRawSimplified),
+                         centralMomentOrders = rbind(cOrders, c(1,2)),
+                         centralMoments = append(cMoments, 0)),
+                    class = "momentList")
+  
+  
   expect_equal(res1, res2, check.attributes = FALSE)
+  expect_equal(res1Simplified, res2Simplified, check.attributes = FALSE)
   
   #------- (1,2) missing in rOrders and cOrders, type = 'central' ----------
   
   res1 <- transformMoment(order = c(1,2),
                           type = 'central',
                           closure = "zero",
-                          momentList = mList)
+                          momentList = mList,
+                          simplify = FALSE)
   
   res2 <- structure(list(rawMomentOrders = rOrders,
                          rawMoments = rMoments,
@@ -143,7 +166,8 @@ test_that("transformMoment works with only the last moment(s) missing", {
   res1 <- transformMoment(order = c(1,2),
                           type = 'raw',
                           closure = "zero",
-                          momentList = mList)
+                          momentList = mList,
+                          simplify = FALSE)
   
   momentRaw <- quote(1 * ("m1"^1 * "m2"^2) * (1) + 
                        1 * ("m1"^0 * "m2"^2) * (0) + 
@@ -165,7 +189,8 @@ test_that("transformMoment works with only the last moment(s) missing", {
   res1 <- transformMoment(order = c(1,2),
                           type = 'central',
                           closure = "zero",
-                          momentList = mList)
+                          momentList = mList,
+                          simplify = FALSE)
   
   expect_equal(res1, mList, check.attributes = FALSE)
   
@@ -183,7 +208,8 @@ test_that("transformMoment works with only the last moment(s) missing", {
   res1 <- transformMoment(order = c(1,2),
                           type = 'raw',
                           closure = "zero",
-                          momentList = mList)
+                          momentList = mList,
+                          simplify = FALSE)
   
   expect_equal(res1, mList, check.attributes = FALSE)
 
@@ -192,7 +218,8 @@ test_that("transformMoment works with only the last moment(s) missing", {
   res1 <- transformMoment(order = c(1,2),
                           type = 'central',
                           closure = "zero",
-                          momentList = mList)
+                          momentList = mList,
+                          simplify = FALSE)
   
   momentCentr <- quote(-1 * ("m1"^1 * "m2"^2) * (1) + 
                        1 * ("m1"^0 * "m2"^2) * ("m1") + 
@@ -255,7 +282,8 @@ test_that("transformMoment works with a missing moment in the middle and at the 
   res1 <- transformMoment(order = c(1,2),
                           type = 'central',
                           closure = "zero",
-                          momentList = mList)
+                          momentList = mList,
+                          simplify = FALSE)
   
   momentRaw <- quote(1 * ("m1"^1 * "m2"^1) * (1) + 
                      1 * ("m1"^0 * "m2"^1) * (0) + 
@@ -292,7 +320,8 @@ test_that("transformMoment works with a missing moment in the middle and at the 
   res1 <- transformMoment(order = c(1,2),
                           type = 'central',
                           closure = "zero",
-                          momentList = mList)
+                          momentList = mList,
+                          simplify = FALSE)
   
   momentRaw <- quote(1 * ("m1"^1 * "m2"^1) * (1) + 
                        1 * ("m1"^0 * "m2"^1) * (0) + 
@@ -331,7 +360,8 @@ test_that("transformMoment works with a missing moment in the middle and at the 
   res1 <- transformMoment(order = c(1,2),
                           type = 'raw',
                           closure = "zero",
-                          momentList = mList)
+                          momentList = mList,
+                          simplify = FALSE)
   
   momentCentr <- quote(1 * ("m1"^1 * "m2"^1) * (1) + 
                        -1 * ("m1"^0 * "m2"^1) * ("m1") + 
@@ -370,7 +400,8 @@ test_that("transformMoment works with a missing moment in the middle and at the 
   res1 <- transformMoment(order = c(1,2),
                           type = 'raw',
                           closure = "zero",
-                          momentList = mList)
+                          momentList = mList,
+                          simplify = FALSE)
   
   momentRaw <- quote(1 * ("m1"^1 * "m2"^2) * (1) + 
                      1 * ("m1"^0 * "m2"^2) * (0) + 
