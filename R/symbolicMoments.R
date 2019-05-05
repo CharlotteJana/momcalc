@@ -2,7 +2,6 @@
 #t2 lognormal: überprüfen, ob mean wohldefiniert
 #v1 was passiert bei falschen werten für mean, cov bei gamma?
 #t1 References: LakatosCo2015
-#v1 Ist es konsistenter, wenn quote(0) anstatt 0 zurückgegeben wird?
 #t1 multinomial testen
 
 #' Symbolic calculation of moments
@@ -57,6 +56,8 @@ symbolicMoments <- function(distribution, missingOrders, mean = NA, cov = NA, va
   # zero: all moments = 0
   if(distribution == "zero"){
     missingMoments <- rep(list(0), nrow(missingOrders))
+    if(simplify)
+      missingMoments <- simplify2array(missingMoments)
     return(missingMoments)
   }
   
@@ -200,6 +201,7 @@ symbolicMoments <- function(distribution, missingOrders, mean = NA, cov = NA, va
       string <- stringr::str_remove_all(pattern = "\"", string = format(m))
       str2lang(Deriv::Simplify(string))
       })
+    missingMoments <- simplify2array(missingMoments)
   }
   return(missingMoments)
 }
