@@ -4,7 +4,8 @@
 \alias{transformMoment}
 \title{Transform raw moments into central moments and vice versa}
 \usage{
-transformMoment(order, type, momentList, closure = "zero")
+transformMoment(order, type, momentList, closure = "zero",
+  simplify = TRUE)
 }
 \arguments{
 \item{order}{numeric vector giving the order of the desired moment}
@@ -14,6 +15,9 @@ transformMoment(order, type, momentList, closure = "zero")
 \item{momentList}{object of class \code{\link{momentList}}.}
 
 \item{closure}{string giving the closure method to use if a central moment is unknown.}
+
+\item{simplify}{bool indiciating if the resulting expressions should be simplified.
+Function \code{\link[Deriv]{Simplify}} from package \pkg{Deriv} is used for simplification.}
 }
 \value{
 This function returns an object of class 'momentList'.

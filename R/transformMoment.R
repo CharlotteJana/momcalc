@@ -29,7 +29,8 @@
 #' @param simplify bool indiciating if the resulting expressions should be simplified.
 #' Function \code{\link[Deriv]{Simplify}} from package \pkg{Deriv} is used for simplification.
 #' @importFrom Deriv Simplify
-transformMoment <- function(order, type, momentList, closure = "zero", simplify = TRUE){
+transformMoment <- function(order, type, momentList, 
+                            closure = "zero", simplify = TRUE){
   
   momentList <- validate_momentList(momentList)
   
@@ -42,7 +43,8 @@ transformMoment <- function(order, type, momentList, closure = "zero", simplify 
   typeOrders <- typeMoments <- otherOrders <- otherMoments <- NULL
   k_in_typeOrders <- k_in_otherOrders <- NULL
 
-  readMoments <- function(momentList, type){ # a help function to assign some values
+  # a help function to assign some values:
+  readMoments <- function(momentList, type){ 
     
     if(type == "raw"){
       assign("typeOrders", momentList$rawMomentOrders, envir = parent.frame())
@@ -110,7 +112,8 @@ transformMoment <- function(order, type, momentList, closure = "zero", simplify 
                                        mean = mean(momentList),
                                        cov = cov(momentList))[[1]]
       momentList$centralMomentOrders <- rbind(momentList$centralMomentOrders, k)
-      momentList$centralMoments <- append(momentList$centralMoments, momentCentral)
+      momentList$centralMoments <- append(momentList$centralMoments, 
+                                          momentCentral)
       readMoments(momentList, type)
     }
     # if k is a row in typeMomentOrders but not in otherMomentOrders

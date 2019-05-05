@@ -7,7 +7,7 @@
 \usage{
 dmix(lower = -Inf, upper = Inf, distrib, weights)
 
-mmix(order, lower = -Inf, upper = Inf, distrib, weights)
+mmix(order = 1:4, lower = -Inf, upper = Inf, distrib, weights)
 }
 \arguments{
 \item{lower}{numeric giving the lower bound of the support. Defaults to -Inf.}

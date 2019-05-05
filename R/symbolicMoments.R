@@ -45,7 +45,9 @@
 #' @importFrom utils combn
 #' @importFrom Deriv Simplify
 #' @export
-symbolicMoments <- function(distribution, missingOrders, mean = NA, cov = NA, var = NA, simplify = TRUE){
+symbolicMoments <- function(distribution, missingOrders, 
+                            mean = NA, cov = NA, var = NA, 
+                            simplify = TRUE){
   
   # definitions
   if(is.vector(missingOrders))
@@ -73,8 +75,7 @@ symbolicMoments <- function(distribution, missingOrders, mean = NA, cov = NA, va
         stop("The covariance matrix 'cov' should be symmetric.")
   }
   
-  
-  # normal: moments are 0 (if sum(order) is odd) or calculated with package symmoments (if sum(order) is even)
+  # normal: calculation with package symmoments (if sum(order) is even)
   if(distribution == "normal"){
     for(i in seq_len(nrow(missingOrders))){
       order <- as.numeric(missingOrders[i, ])
@@ -85,12 +86,14 @@ symbolicMoments <- function(distribution, missingOrders, mean = NA, cov = NA, va
         moment <- symmoments::callmultmoments(order) # calculation of the moment
         names(moment$coefficients) <- NULL
         cnames <- colnames(moment$representation)
-        cindexes <- lapply(stringr::str_extract_all(cnames, "[[:digit:]]"), as.numeric)
+        cindexes <- lapply(stringr::str_extract_all(cnames, "[[:digit:]]"), 
+                           as.numeric)
         momFormula <- list()
         for(j in seq_along(moment$coefficients)){
           factors <- lapply(1:(n*(n+1)/2), function(r){
             power <- moment$representation[j, r]
-            if(power != 0) bquote(.(cov[[cindexes[[r]][1]]][[cindexes[[r]][2]]])^.(power))
+            if(power != 0) 
+              bquote(.(cov[[cindexes[[r]][1]]][[cindexes[[r]][2]]])^.(power))
           })
           factors[sapply(factors, is.null)] <- NULL
           factors <- Reduce(function(a,b) bquote(.(a)*.(b)), factors)
@@ -123,12 +126,11 @@ symbolicMoments <- function(distribution, missingOrders, mean = NA, cov = NA, va
       summand1 <- lapply(1:n, function(i) bquote(.(order[i])*.(mu[[i]])))
       summand1 <- Reduce(function(a,b) bquote(.(a)+.(b)), summand1)
       summand2 <- lapply(1:n, function(i) lapply(i:n, function(j){ 
-                                                        if(i == j) 
-                                                          bquote(.(order[i])^2*.(sigma[[i]][[i]]))
-                                                        else 
-                                                          bquote(2*.(order[i])*.(order[j])*.(sigma[[i]][[j]]))
-                                                 })
-                         )
+        if(i == j) 
+          bquote(.(order[i])^2*.(sigma[[i]][[i]]))
+        else 
+          bquote(2*.(order[i])*.(order[j])*.(sigma[[i]][[j]]))
+      }))
       summand2 <- Reduce(c, summand2) # flatten the nested list
       summand2 <- Reduce(function(a,b) bquote(.(a)+.(b)), summand2)
       missingMoments[[i]] <- bquote(exp(.(summand1)+0.5*.(summand2)))
@@ -140,7 +142,8 @@ symbolicMoments <- function(distribution, missingOrders, mean = NA, cov = NA, va
     
     # define parameters beta and A
     beta <- lapply(1:n, function(i) bquote(.(cov[[i]][[i]])/.(mean[[i]])))
-    A_indexes <- as.data.frame(t(cbind(utils::combn(1:n, 2), matrix(rep(1:n, each = 2), nrow = 2))))
+    A_indexes <- as.data.frame(t(cbind(utils::combn(1:n, 2), 
+                                       matrix(rep(1:n, each = 2), nrow = 2))))
     A <- list()
     for(r in 1:nrow(A_indexes)){
       i <- A_indexes[r, 1]
@@ -161,7 +164,8 @@ symbolicMoments <- function(distribution, missingOrders, mean = NA, cov = NA, va
       polynomials <- list()
       for(j in 1:n){
         poly_indexes <- rowSums(apply(A_indexes, 2, match, j, nomatch = 0)) >= 1
-        polynomials <- append(polynomials, list(spray::linear(as.numeric(poly_indexes), 1)^order[j]))
+        polynomials <- append(polynomials, 
+          list(spray::linear(as.numeric(poly_indexes), 1)^order[j]))
       }
       polynomials <- Reduce('*', polynomials)
       summands <- list()
@@ -172,12 +176,15 @@ symbolicMoments <- function(distribution, missingOrders, mean = NA, cov = NA, va
           if(row[k] == 1)
             factors <- append(factors, bquote(.(A[[k]])))
           if(row[k] > 1)
-            factors <- append(factors, bquote(factorial(.(A[[k]])+.(row[k])-1)/factorial(.(A[[k]])-1)))
+            factors <- append(factors, 
+              bquote(factorial(.(A[[k]])+.(row[k])-1)/factorial(.(A[[k]])-1)))
         }
-        summands <- append(summands, Reduce(function(a,b) bquote(.(a)*.(b)), factors))
+        product <- Reduce(function(a,b) bquote(.(a)*.(b)), factors)
+        summands <- append(summands, product)
       }
       sum <-  Reduce(function(a,b) bquote(.(a)+.(b)), summands)
-      result <- append(sum, lapply(seq_along(beta), function(j) bquote(.(beta[[j]])^.(order[j])))) # times beta^order
+      result <- append(sum, lapply(seq_along(beta), function(j) 
+        bquote(.(beta[[j]])^.(order[j])))) # times beta^order
       missingMoments[[i]] <- Reduce(function(a,b) bquote(.(a)*.(b)), result)
     }
   }

@@ -22,7 +22,8 @@ momentList <- function(rawMomentOrders = NULL,
     rawMoments <- list(1)
   }
   if(is.null(centralMomentOrders)){
-    centralMomentOrders <- rbind(rep(0, ncol(rawMomentOrders)), diag(ncol(rawMomentOrders)))
+    centralMomentOrders <- rbind(rep(0, ncol(rawMomentOrders)), 
+                                 diag(ncol(rawMomentOrders)))
     centralMoments <- append(1, as.list(rep(0, ncol(rawMomentOrders))))
   }
   
