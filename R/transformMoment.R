@@ -38,6 +38,7 @@
 #' @param simplify bool indiciating if the resulting expressions should be simplified.
 #' Function \code{\link[Deriv]{Simplify}} from package \pkg{Deriv} is used for simplification.
 #' @importFrom Deriv Simplify
+#' @export
 transformMoment <- function(order, type, momentList, 
                             closure = "zero", simplify = TRUE){
   
