@@ -182,11 +182,13 @@ mean.momentList <- function(x, ...){
 
 ###### cov ######
 
+#' @export
 cov <- function(x, y = NULL, use = "everything", 
                 method = c("pearson", "kendall", "spearman"), ...){
   UseMethod("cov")
 }
 
+#' @export
 cov.default <- function(x, y = NULL, use = "everything", 
                         method = c("pearson", "kendall", "spearman"), ...){
    stats::cov(x, y = NULL, use = "everything", 
