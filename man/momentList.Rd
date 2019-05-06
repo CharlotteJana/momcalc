@@ -2,35 +2,60 @@
 % Please edit documentation in R/momentList.R
 \name{momentList}
 \alias{momentList}
-\alias{mean.momentList}
+\alias{validate_momentList}
+\alias{new_momentList}
+\alias{momentlist}
 \alias{cov.momentList}
+\alias{mean.momentList}
 \title{Class momentList}
 \usage{
+new_momentList(rawMomentOrders = NULL, rawMoments = list(),
+  centralMomentOrders = NULL, centralMoments = list())
+
 momentList(rawMomentOrders = NULL, rawMoments = list(),
   centralMomentOrders = NULL, centralMoments = list())
+
+validate_momentList(x)
 
 \method{mean}{momentList}(x)
 
 \method{cov}{momentList}(x)
 }
 \arguments{
-\item{rawMomentOrders}{matrix. Every row gives the order of a raw moment that is already known.}
+\item{rawMomentOrders}{matrix or data.frame. Every row gives the order of a raw moment that is already known.}
 
 \item{rawMoments}{list. The i-th entry is the raw Moment of order \code{rawMomentOrders[i, ]}.}
 
-\item{centralMomentOrders}{matrix. Every row gives the order of a central moment that is already known.}
+\item{centralMomentOrders}{matrix or data.frame. Every row gives the order of a central moment that is already known.}
 
 \item{centralMoments}{list. The i-th entry is the central Moment of order \code{centralMomentOrders[i, ]}.}
 
 \item{x}{object of class \code{momentList}}
 }
 \description{
-Create an object of class \code{momentList}.
+Create and validate objects of class \code{momentList}. Class \code{momentList}
+is needed as argument for function \code{\link{transformMoment}}. The returned value
+of \code{transformMoment} is of class \code{momentList}, too. The class provides a
+convenient structure to store moments of a multidimensional distribution. \cr \cr
+Class \code{momentList} consists of four elements: Element
+\code{centralMoments} contains all known central moments of the distribution,
+where as \code{rawMoments} contains all raw moments of the distribution. Both
+are stored as list. The elements \code{centralMomentOrders} and
+\code{rawMomentOrders} contain the corresponding orders of the moments. They
+are stored as matrix or data.frame, each row represents one order of the
+moment. The number of columns of these matrices should be equal to the
+dimension of the distribution.
 }
-\section{Methods (by generic)}{
-\itemize{
-\item \code{mean}: pick means out of momentList
-
-\item \code{cov}: pick covariances out of momentList
-}}
-
+\details{
+There are five different functions available for this class: \cr
+Function \code{new_momentList} is a low level constructor that does not check for
+correct types of the arguments or if they fit together. It should be only used
+with care. \cr
+Function \code{momentList} creates an object of class \code{momentList} and performs
+various checks on the elements. Most of them are executed within function 
+\code{validate_momentList}. This function particularly checks for moments of order
+one and zero. If they contain false values, a warning will be thrown. If moments of these 
+orders are not contained in \code{momentList}, they are added automatically. \cr
+The functions \code{mean} and \code{cov} don't do calculations. They only pick the
+appropriate values out of momentList in case they exist.
+}

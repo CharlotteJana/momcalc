@@ -1,13 +1,59 @@
 
 #' Class momentList
 #' 
-#' Create an object of class \code{momentList}.
-#' @param centralMomentOrders matrix. Every row gives the order of a central moment that is already known.
+#' Create and validate objects of class \code{momentList}. Class \code{momentList}
+#' is needed as argument for function \code{\link{transformMoment}}. The returned value
+#' of \code{transformMoment} is of class \code{momentList}, too. The class provides a
+#' convenient structure to store moments of a multidimensional distribution. \cr \cr
+#' Class \code{momentList} consists of four elements: Element
+#' \code{centralMoments} contains all known central moments of the distribution,
+#' where as \code{rawMoments} contains all raw moments of the distribution. Both
+#' are stored as list. The elements \code{centralMomentOrders} and
+#' \code{rawMomentOrders} contain the corresponding orders of the moments. They
+#' are stored as matrix or data.frame, each row represents one order of the
+#' moment. The number of columns of these matrices should be equal to the
+#' dimension of the distribution.
+#' 
+#' There are five different functions available for this class: \cr
+#' Function \code{new_momentList} is a low level constructor that does not check for
+#' correct types of the arguments or if they fit together. It should be only used
+#' with care. \cr
+#' Function \code{momentList} creates an object of class \code{momentList} and performs
+#' various checks on the elements. Most of them are executed within function 
+#' \code{validate_momentList}. This function particularly checks for moments of order
+#' one and zero. If they contain false values, a warning will be thrown. If moments of these 
+#' orders are not contained in \code{momentList}, they are added automatically. \cr
+#' The functions \code{mean} and \code{cov} don't do calculations. They only pick the
+#' appropriate values out of momentList in case they exist.  
+#' 
+#' @param centralMomentOrders matrix or data.frame. Every row gives the order of a central moment that is already known.
 #' @param centralMoments list. The i-th entry is the central Moment of order \code{centralMomentOrders[i, ]}.
-#' @param rawMomentOrders matrix. Every row gives the order of a raw moment that is already known.
+#' @param rawMomentOrders matrix or data.frame. Every row gives the order of a raw moment that is already known.
 #' @param rawMoments list. The i-th entry is the raw Moment of order \code{rawMomentOrders[i, ]}.
 #' @param x object of class \code{momentList}
+#' @name momentList
+#' @aliases validate_momentList new_momentList momentlist cov.momentList mean.momentList
+NULL
+
+####### constructors ########
+
 #' @export
+#' @rdname momentList
+new_momentList <- function(rawMomentOrders = NULL,
+                           rawMoments = list(),
+                           centralMomentOrders = NULL,
+                           centralMoments = list()){
+  
+  structure(list(rawMomentOrders = rawMomentOrders,
+                 rawMoments = rawMoments,
+                 centralMomentOrders = centralMomentOrders,
+                 centralMoments = centralMoments,
+                 class = "momentList"))
+}
+
+
+#' @export
+#' @rdname momentList
 momentList <- function(rawMomentOrders = NULL,
                        rawMoments = list(),
                        centralMomentOrders = NULL,
@@ -27,15 +73,18 @@ momentList <- function(rawMomentOrders = NULL,
     centralMoments <- append(1, as.list(rep(0, ncol(rawMomentOrders))))
   }
   
-  mList <- structure(list(rawMomentOrders = rawMomentOrders,
+  mList <- new_momentList(rawMomentOrders = rawMomentOrders,
                           rawMoments = rawMoments,
                           centralMomentOrders = centralMomentOrders,
-                          centralMoments = centralMoments,
-                     class = "momentList"))
-  return(mList)
+                          centralMoments = centralMoments)
+  
+  return(validate_momentList(mList))
 }
 
-# #' @describeIn momentList validate an object of class \code{momentList}
+####### validate_momentList ######
+
+#' @rdname momentList 
+#' @export
 validate_momentList <- function(x){
   
   stopifnot(is.list(x$rawMoments))
@@ -110,9 +159,11 @@ validate_momentList <- function(x){
   return(x)
 }
 
-####### mean ######
+####### mean #######
 
-#' @describeIn momentList pick means out of momentList
+
+#' @rdname momentList
+#' @export
 mean.momentList <- function(x){
   n <- ncol(x$rawMomentOrders)
   mean <- list()
@@ -126,7 +177,7 @@ mean.momentList <- function(x){
   return(mean)
 }
 
-##### cov #####
+###### cov ######
 
 cov <- function(x, y = NULL, use = "everything", 
                 method = c("pearson", "kendall", "spearman"), ...){
@@ -139,7 +190,8 @@ cov.default <- function(x, y = NULL, use = "everything",
               method = c("pearson", "kendall", "spearman"), ...)
 }
 
-#' @describeIn momentList pick covariances out of momentList
+#' @rdname momentList
+#' @export
 cov.momentList <- function(x){
   
   n <- ifelse(length(x$centralMoments) > 0, 
@@ -174,4 +226,3 @@ cov.momentList <- function(x){
   
   return(cov)  
 }
-
