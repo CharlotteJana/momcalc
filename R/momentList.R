@@ -23,14 +23,17 @@
 #' \code{validate_momentList}. This function particularly checks for moments of order
 #' one and zero. If they contain false values, a warning will be thrown. If moments of these 
 #' orders are not contained in \code{momentList}, they are added automatically. \cr
-#' The functions \code{mean} and \code{cov} don't do calculations. They only pick the
-#' appropriate values out of momentList in case they exist.  
+#' The functions \code{mean} and \code{cov} don't do calculations. They pick the
+#' appropriate values out of momentList in case they exist. Function \code{cov} may
+#' transform raw moments of order two into covariances, if the corresponding central
+#' moments are not given.
 #' 
 #' @param centralMomentOrders matrix or data.frame. Every row gives the order of a central moment that is already known.
 #' @param centralMoments list. The i-th entry is the central Moment of order \code{centralMomentOrders[i, ]}.
 #' @param rawMomentOrders matrix or data.frame. Every row gives the order of a raw moment that is already known.
 #' @param rawMoments list. The i-th entry is the raw Moment of order \code{rawMomentOrders[i, ]}.
 #' @param x object of class \code{momentList}
+#' @param ... additional arguments to function mean. They are currently not used.
 #' @name momentList
 #' @aliases validate_momentList new_momentList momentlist cov.momentList mean.momentList
 NULL
@@ -164,7 +167,7 @@ validate_momentList <- function(x){
 
 #' @rdname momentList
 #' @export
-mean.momentList <- function(x){
+mean.momentList <- function(x, ...){
   n <- ncol(x$rawMomentOrders)
   mean <- list()
   

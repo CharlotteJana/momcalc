@@ -2,19 +2,21 @@
 % Please edit documentation in R/transformMoment.R
 \name{transformMoment}
 \alias{transformMoment}
+\alias{transformmoment}
 \title{Transform raw moments into central moments and vice versa}
 \usage{
 transformMoment(order, type, momentList, closure = "zero",
   simplify = TRUE)
 }
 \arguments{
-\item{order}{numeric vector giving the order of the desired moment}
+\item{order}{numeric vector giving the order of the desired moment.}
 
-\item{type}{string, either 'central' or 'raw'}
+\item{type}{string, either 'central' or 'raw'.}
 
 \item{momentList}{object of class \code{\link{momentList}}.}
 
-\item{closure}{string giving the closure method to use if a central moment is unknown.}
+\item{closure}{string giving the closure method to use if a central moment is unknown. 
+Possible values are the same as for argument \code{distribution} of \code{\link{symbolicMoments}}.}
 
 \item{simplify}{bool indiciating if the resulting expressions should be simplified.
 Function \code{\link[Deriv]{Simplify}} from package \pkg{Deriv} is used for simplification.}
@@ -24,20 +26,28 @@ This function returns an object of class 'momentList'.
 }
 \description{
 Let X be a random variable and Y the corresponding centered variable, i.e. \eqn{Y = X - \mu}. 
-Let p be the \code{order} of the desired moment. 
-If \code{type = 'raw'}, this function returns
-\deqn{E(X^p) = \sum_{k_1=0}^{p_1}...\sum_{k_n=0}^{p_n} {p \choose k} \mu^{p-k} E(Y^k).}
+Let p be the \code{order} of the desired moment. \cr \cr
+If \bold{type = 'raw'}, this function returns
+\deqn{
+E(X^p) = \sum_{k_1=0}^{p_1}...\sum_{k_n=0}^{p_n} {p \choose k} \mu^{p-k} E(Y^k).}{
+E(X^p) = \sum choose(p,k)*\mu^(p-k)*E(Y^k),
+}
+\ifelse{latex}{}{where the sum is taken over any row \code{k} in \code{expand.grid(lapply(1:n, function(i) 0:p[i]))}. \cr \cr}
 The values of \eqn{E(Y^k)} are replaced by
 \itemize{
-  \item \code{centralMoment[[i]]} if \code{k} = \code{centralMomentOrders[i, ]},
-  \item \code{\link{transformMoment}(type = 'central', ...)} if \code{k} is a row in \code{rawMomentOrders},
-  \item \code{\link{symbolicMoments}(closure, k)} if \code{k} is neither a row in \code{centralMomentOrders} nor in \code{rawMomentOrders}.
+  \item \code{centralMoment[[i]]}, if \code{k} = \code{centralMomentOrders[i, ]}
+  \item \code{\link{transformMoment}(type = 'central', ...)}, if \code{k} is a row in \code{rawMomentOrders}
+  \item \code{\link{symbolicMoments}(closure, k)}, if \code{k} is neither a row in \code{centralMomentOrders} nor in \code{rawMomentOrders}
 }
-If \code{type = 'central'}, this function returns
-\deqn{E(Y^p) = \sum_{k_1=0}^{p_1}...\sum_{k_n=0}^{p_n} (-1)^{p-k} {p \choose k} \mu^{p-k} E(X^k).}
+If \bold{type = 'central'}, this function returns
+\deqn{
+E(Y^p) = \sum_{k_1=0}^{p_1}...\sum_{k_n=0}^{p_n} (-1)^{p-k} {p \choose k} \mu^{p-k} E(X^k).}{
+E(Y^p) = \sum (-1)^(p-k)*choose(p,k)*\mu^(p-k)*E(X^k),
+}
+\ifelse{latex}{}{where the sum is taken over any row \code{k} in \code{expand.grid(lapply(1:n, function(i) 0:p[i]))}. \cr \cr} 
 The values of \eqn{E(X^k)} are replaced by
 \itemize{
-  \item \code{rawMoment[[i]]} if \code{k} = \code{rawMomentOrders[i, ]},
-  \item \code{\link{transformMoment}(type = 'raw', ...)} if \code{k} is not a row in \code{rawMomentOrders}.
+  \item \code{rawMoment[[i]]}, if \code{k} = \code{rawMomentOrders[i, ]}
+  \item \code{\link{transformMoment}(type = 'raw', ...)}, if \code{k} is not a row in \code{rawMomentOrders}
 }
 }

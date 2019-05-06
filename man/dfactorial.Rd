@@ -11,6 +11,6 @@ dfactorial(n)
 }
 \description{
 This function returns the double factorial n!! of a natural number n.
-It is defined as \eqn{n!! = n*(n-2)*(n-4)*...*1} if n is odd and
-\eqn{n!! = n*(n-2)*(n-4)*...*2} if n is even.
+It is defined as \eqn{n!! = n(n-2)(n-4) \cdot ... \cdot 1}{n!! = n*(n-2)*(n-4)*...*1}
+if n is odd and  \eqn{n!! = n(n-2)(n-4)\cdot ... \cdot 2}{n!! = n*(n-2)*(n-4)*...*2} if n is even.
 }

@@ -1,18 +1,17 @@
-#t1 tests
 #t2 lognormal: überprüfen, ob mean wohldefiniert
 #v1 was passiert bei falschen werten für mean, cov bei gamma?
 #t1 References: LakatosCo2015
-#t1 multinomial testen
 
 #' Symbolic calculation of moments
 #'
-#' Compute the moments of a multivariate variable \eqn{X = (X_1, ..., X_n)}
+#' Compute the moments of a multivariate variable 
+#' \eqn{X = (X_1, ..., X_n)}{X = X[1], ..., X[n]}
 #' and return the formula as quoted expression.
 #'
 #' @param mean vector or list with expected values. Entry \code{mean[[i]]} should
-#' contain a value for \eqn{E(X_i)}.
+#' contain a value for \eqn{E(X_i)}{E(X[i])}.
 #' @param cov matrix or nested list. Entry \code{cov[i][j]} (or \code{cov[[i]][[j]]} 
-#' respectivly) should contain a value for the covariance \eqn{Cov(X_i, X_j)}.
+#' respectivly) should contain a value for the covariance \eqn{Cov(X_i, X_j)}{Cov(X[i], X[j])}.
 #' @param var optional. If \code{n = 1}, \code{cov} would only
 #' contain one entry - the variance \eqn{Var(X)}. This value can be passed
 #' to parameter \code{var} instead of \code{cov}.
@@ -31,19 +30,22 @@
 #' @return A list where each element is a quoted expression.
 #' The i-th element of this list gives a formula for the
 #' moment whose order is given in the i-th row of \code{missingOrders}.
-#' @note The calculation of the central moments of a multivariate normal distribution
+#' If \code{simplify = TRUE}, the returned value may as well be a vector or number.
+#' @note The calculation of the central moments of a multivariate \bold{normal} distribution
 #' is based on function \code{\link[symmoments]{callmultmoments}} of package \pkg{symmoments}.
-#' If \code{distribution = 'gamma'} and the evaluation of the results leads to NaNs, 
-#' then the values of cov and mean do not fit to a multivariate gamma distribution.
-#' All entries should of cov should be positive and the diagonals should be large
+#' If the calculation for a  multivariate \bold{gamma} distribution leads to NaNs, 
+#' then the values of cov and mean do not fit to a gamma distribution.
+#' All entries of cov should be positive and the diagonals should be large
 #' with respect to the other entries. More specifically, the inequations 
-#' \eqn{mean[i] > \sum_{k \neq i} \frac{mean[k]*cov[i,k]}{cov[i,i]}}
+#' \deqn{\texttt{mean[i]} > \sum_{k \neq i} \frac{mean[k]\cdot cov[i,k]}{cov[i,i]}}{
+#' mean[i] > sum_(k != i) mean[k]*cov[i,k]/cov[i,i]}
 #' should be satisfied for all i in 1:n.
 #' @importFrom symmoments callmultmoments
 #' @importFrom stringr str_extract_all str_remove_all
 #' @importFrom spray linear
 #' @importFrom utils combn
 #' @importFrom Deriv Simplify
+#' @aliases symbolicmoments symbolicmoment symbolicMoment
 #' @export
 symbolicMoments <- function(distribution, missingOrders, 
                             mean = NA, cov = NA, var = NA, 

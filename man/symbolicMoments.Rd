@@ -2,6 +2,9 @@
 % Please edit documentation in R/symbolicMoments.R
 \name{symbolicMoments}
 \alias{symbolicMoments}
+\alias{symbolicmoments}
+\alias{symbolicmoment}
+\alias{symbolicMoment}
 \title{Symbolic calculation of moments}
 \usage{
 symbolicMoments(distribution, missingOrders, mean = NA, cov = NA,
@@ -21,10 +24,10 @@ of X. The following values are possible:
 of a moment that shall be calculated.}
 
 \item{mean}{vector or list with expected values. Entry \code{mean[[i]]} should
-contain a value for \eqn{E(X_i)}.}
+contain a value for \eqn{E(X_i)}{E(X[i])}.}
 
 \item{cov}{matrix or nested list. Entry \code{cov[i][j]} (or \code{cov[[i]][[j]]} 
-respectivly) should contain a value for the covariance \eqn{Cov(X_i, X_j)}.}
+respectivly) should contain a value for the covariance \eqn{Cov(X_i, X_j)}{Cov(X[i], X[j])}.}
 
 \item{var}{optional. If \code{n = 1}, \code{cov} would only
 contain one entry - the variance \eqn{Var(X)}. This value can be passed
@@ -37,18 +40,21 @@ Function \code{\link[Deriv]{Simplify}} from package \pkg{Deriv} is used for simp
 A list where each element is a quoted expression.
 The i-th element of this list gives a formula for the
 moment whose order is given in the i-th row of \code{missingOrders}.
+If \code{simplify = TRUE}, the returned value may as well be a vector or number.
 }
 \description{
-Compute the moments of a multivariate variable \eqn{X = (X_1, ..., X_n)}
+Compute the moments of a multivariate variable 
+\eqn{X = (X_1, ..., X_n)}{X = X[1], ..., X[n]}
 and return the formula as quoted expression.
 }
 \note{
-The calculation of the central moments of a multivariate normal distribution
+The calculation of the central moments of a multivariate \bold{normal} distribution
 is based on function \code{\link[symmoments]{callmultmoments}} of package \pkg{symmoments}.
-If \code{distribution = 'gamma'} and the evaluation of the results leads to NaNs, 
-then the values of cov and mean do not fit to a multivariate gamma distribution.
-All entries should of cov should be positive and the diagonals should be large
+If the calculation for a  multivariate \bold{gamma} distribution leads to NaNs, 
+then the values of cov and mean do not fit to a gamma distribution.
+All entries of cov should be positive and the diagonals should be large
 with respect to the other entries. More specifically, the inequations 
-\eqn{mean[i] > \sum_{k \neq i} \frac{mean[k]*cov[i,k]}{cov[i,i]}}
+\deqn{\texttt{mean[i]} > \sum_{k \neq i} \frac{mean[k]\cdot cov[i,k]}{cov[i,i]}}{
+mean[i] > sum_(k != i) mean[k]*cov[i,k]/cov[i,i]}
 should be satisfied for all i in 1:n.
 }

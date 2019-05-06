@@ -3,7 +3,8 @@
 # "If the licenses are compatible you can copy and paste the exported function 
 #  into your own package. If you do this, remember to update Authors@R."
 #t1 Die Argumente upper, a, lower, b einheitlich verwenden!
-#t1 Brauche ich dtrunc und mtrunc wirklich?
+#t1 Brauche ich dtrunc wirklich? (mtrunc gibt es in truncdist nicht!)
+#t1 vielleicht fehler testen und dann durch Nullen ersetzen?
 
 #------ dtrunc & mtrunc ----------
 

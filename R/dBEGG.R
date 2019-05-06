@@ -1,4 +1,5 @@
 #======== todo =================================================================
+#t2 Note weg oder wirklich beispiele für is.unimodal mit dBEGG
 
 #' Bimodal extension of the generalized Gamma-Distribution
 #' 
@@ -10,7 +11,7 @@
 #' and \eqn{\sigma}{σ}.
 #' @param x vector of quantiles.
 #' @param alpha a positive number. Controls the kurtosis of the distribution.
-#   The distribution is leptokurtic for \eqn{\alpha \in (0, 2)}{α ϵ (0,2)} and
+#'  The distribution is leptokurtic for \eqn{\alpha \in (0, 2)}{α ϵ (0,2)} and
 #'   \eqn{\beta = 1}{β = 1}. It is platikurtic for \eqn{\alpha > 2}{α > 2} and
 #'   \eqn{\beta = 1}{β = 1}.
 #' @param beta a positive number. Controls the kurtosis of the distribution.
@@ -28,13 +29,12 @@
 #' @param sigma a positive number. The scaling parameter of the distribution.
 #'   Defaults to 1.
 #' @param order integer vector. Specifies all orders for which the raw moments
-#' shall be computed with \code{mBEGG}.
+#' shall be calculated.
 #' @note This distribution is included in package \pkg{momcalc} because it is a 
 #' good test case for function \code{\link{is.unimodal}} and the raw moments are
 #' known.
-#' @examples  
-#' 
-#' # The first 3 examples are the same as in the paper:#'
+#' @aliases mBEGG dBEGG begg dbegg mbegg
+#' @examples  # The first 3 examples are the same as in the paper:
 #' par(mfrow=c(2, 2))
 #' x <- seq(-2, 2, .01)
 #' y <- dBEGG(x, alpha = 2, beta = 2, delta0 = 1, delta1 = 4, eta = 1, eps = 0)
@@ -79,8 +79,8 @@ dBEGG <- function(x, alpha, beta, delta0, delta1, eta, eps, mu = 0, sigma = 1){
 
 #' @describeIn BEGG raw moments
 #' @export
-mBEGG <- function(alpha, beta, delta0, delta1, eta, eps, mu = 0, sigma = 1, 
-                  order = 1:4){
+mBEGG <- function(alpha, beta, delta0, delta1, eta, 
+                  eps, mu = 0, sigma = 1, order = 1:4){
   
   ((-1) ^ order * eta ^ (order / alpha) * (1 + eps) ^ (order + 1))/2 * 
   gamma((delta1 + order + 1) / (alpha * beta)) / 

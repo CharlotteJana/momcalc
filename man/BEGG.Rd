@@ -2,8 +2,11 @@
 % Please edit documentation in R/dBEGG.R
 \name{BEGG}
 \alias{BEGG}
-\alias{dBEGG}
 \alias{mBEGG}
+\alias{dBEGG}
+\alias{begg}
+\alias{dbegg}
+\alias{mbegg}
 \title{Bimodal extension of the generalized Gamma-Distribution}
 \usage{
 dBEGG(x, alpha, beta, delta0, delta1, eta, eps, mu = 0, sigma = 1)
@@ -15,8 +18,9 @@ mBEGG(alpha, beta, delta0, delta1, eta, eps, mu = 0, sigma = 1,
 \item{x}{vector of quantiles.}
 
 \item{alpha}{a positive number. Controls the kurtosis of the distribution.
-\eqn{\beta = 1}{β = 1}. It is platikurtic for \eqn{\alpha > 2}{α > 2} and
-\eqn{\beta = 1}{β = 1}.}
+The distribution is leptokurtic for \eqn{\alpha \in (0, 2)}{α ϵ (0,2)} and
+ \eqn{\beta = 1}{β = 1}. It is platikurtic for \eqn{\alpha > 2}{α > 2} and
+ \eqn{\beta = 1}{β = 1}.}
 
 \item{beta}{a positive number. Controls the kurtosis of the distribution.}
 
@@ -40,7 +44,7 @@ modes with different height.}
 Defaults to 1.}
 
 \item{order}{integer vector. Specifies all orders for which the raw moments
-shall be computed with \code{mBEGG}.}
+shall be calculated.}
 }
 \description{
 The bimodal extension of the generalized Gamma-Distribution (BEGG) was first
@@ -63,9 +67,7 @@ good test case for function \code{\link{is.unimodal}} and the raw moments are
 known.
 }
 \examples{
- 
-
-# The first 3 examples are the same as in the paper:#'
+ # The first 3 examples are the same as in the paper:
 par(mfrow=c(2, 2))
 x <- seq(-2, 2, .01)
 y <- dBEGG(x, alpha = 2, beta = 2, delta0 = 1, delta1 = 4, eta = 1, eps = 0)

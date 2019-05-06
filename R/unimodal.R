@@ -15,7 +15,7 @@
 #' \emph{4-b-unimodal}. The internal methods \code{is.2_b_unimodal} and
 #' \code{is.4_b_unimodal} test these inequalities. Method \code{is.unimodal}
 #' performs these checks, depending on the number of given distributions. A
-#' 4-b-unimodal distribution can still be nonunimodal (see the examples below).
+#' 2-b- or 4-b-unimodal distribution can still be nonunimodal (see the examples below).
 #' But a failure of these tests assures the distribution not to be unimodal.
 #'
 #' @param lower numeric or vector. The lower bound(s) A of the support \eqn{[A,
@@ -30,8 +30,8 @@
 #'   For numerical reasons it is better to test for \code{... > eps} where
 #'   \code{eps} is a small number.
 #' @return Character vector giving the results of the test. Possible values are
-#' "not unimodal", "not existant", NA_character_ and "2-b-unimodal" or 
-#' "4-b-unimodal".
+#' "not unimodal", "not existant", "2-b-unimodal", "4-b-unimodal" or
+#' NA_character_ .
 #' @example inst/examples/unimodal.R
 #' @references 
 #' \insertRef{TeuscherGuiard1994}{momcalc}

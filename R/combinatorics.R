@@ -1,8 +1,8 @@
 #' Double factorial
 #' 
 #' This function returns the double factorial n!! of a natural number n.
-#' It is defined as \eqn{n!! = n*(n-2)*(n-4)*...*1} if n is odd and
-#' \eqn{n!! = n*(n-2)*(n-4)*...*2} if n is even.
+#' It is defined as \eqn{n!! = n(n-2)(n-4) \cdot ... \cdot 1}{n!! = n*(n-2)*(n-4)*...*1}
+#' if n is odd and  \eqn{n!! = n(n-2)(n-4)\cdot ... \cdot 2}{n!! = n*(n-2)*(n-4)*...*2} if n is even.
 #' 
 #' @param n a non negative, natural number
 #' @export
@@ -25,7 +25,8 @@ dfactorial <- function(n){
 #' 
 #' This function returns the multinomial coefficient of a natural number m
 #' and a vector of natrual numbers k.
-#' It is defined as \eqn{\frac{m!}{k_1!\cdot ...\cdot k_n!}}{m!/(k[1]!*...*k[n]!)}, 
+#' It is defined as 
+#' \eqn{\frac{m!}{k_1!\cdot ...\cdot k_n!}}{m!/(k[1]! * ... * k[n]!)},
 #' where \code{n = length(k)} and \eqn{m!} stands for \code{factorial(m)}.
 #' 
 #' @param m a non negative, natural number

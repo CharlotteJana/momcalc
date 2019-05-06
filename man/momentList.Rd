@@ -17,7 +17,7 @@ momentList(rawMomentOrders = NULL, rawMoments = list(),
 
 validate_momentList(x)
 
-\method{mean}{momentList}(x)
+\method{mean}{momentList}(x, ...)
 
 \method{cov}{momentList}(x)
 }
@@ -31,6 +31,8 @@ validate_momentList(x)
 \item{centralMoments}{list. The i-th entry is the central Moment of order \code{centralMomentOrders[i, ]}.}
 
 \item{x}{object of class \code{momentList}}
+
+\item{...}{additional arguments to function mean. They are currently not used.}
 }
 \description{
 Create and validate objects of class \code{momentList}. Class \code{momentList}
@@ -56,6 +58,8 @@ various checks on the elements. Most of them are executed within function
 \code{validate_momentList}. This function particularly checks for moments of order
 one and zero. If they contain false values, a warning will be thrown. If moments of these 
 orders are not contained in \code{momentList}, they are added automatically. \cr
-The functions \code{mean} and \code{cov} don't do calculations. They only pick the
-appropriate values out of momentList in case they exist.
+The functions \code{mean} and \code{cov} don't do calculations. They pick the
+appropriate values out of momentList in case they exist. Function \code{cov} may
+transform raw moments of order two into covariances, if the corresponding central
+moments are not given.
 }

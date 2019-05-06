@@ -26,8 +26,8 @@ Provides weights for every distribution given in \code{distrib}.}
 \item{order}{order of the moment}
 }
 \description{
-Compute the distribution (\code{dmix}) and raw moments (\code{mmix}) of a
-mixture of different, eventually truncated distributions.
+Compute the distribution and raw moments of a mixture of different, 
+one dimenisonal, eventually truncated distributions.
 }
 \examples{
 distributions <- list(list(spec="exp", rate = 2),

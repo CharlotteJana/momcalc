@@ -4,11 +4,11 @@ Title: Symbolic moment calculation
 Version: 0.0-1
 Author: Charlotte Jana
 Maintainer: Charlotte Jana <charlotte.jana@t-online.de>
-Description: Caculate the moments of a normal, lognormal or gamma distribution
-    symbolically. The distribution may be multivariate. Additionally, a method
-    to numerically calculate samples or moments of the BEGG distribution are
-    provided and a test for the unimodality of a one dimensional distribution
-    based on the moments of that distribution.
+Description: Symbolically caculate the moments of a normal, lognormal or gamma 
+    distribution, which may be multivariate. Numerically calculate the 
+    distribution or moments of the BEGG distribution. Test a one dimensional 
+    distribution with compact support if it is unimodal. The test is based on 
+    the moments of that distribution.
 License: GPL(>= 2)
 Encoding: UTF-8
 LazyData: true

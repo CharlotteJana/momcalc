@@ -1,7 +1,7 @@
 #' Mixtures of truncated distributions
 #' 
-#' Compute the distribution (\code{dmix}) and raw moments (\code{mmix}) of a
-#' mixture of different, eventually truncated distributions.
+#' Compute the distribution and raw moments of a mixture of different, 
+#' one dimenisonal, eventually truncated distributions.
 #' 
 #' @param lower numeric giving the lower bound of the support. Defaults to -Inf.
 #' @param upper numeric giving the upper bound of the support. Defaults to Inf.

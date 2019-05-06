@@ -30,8 +30,8 @@ For numerical reasons it is better to test for \code{... > eps} where
 }
 \value{
 Character vector giving the results of the test. Possible values are
-"not unimodal", "not existant", NA_character_ and "2-b-unimodal" or 
-"4-b-unimodal".
+"not unimodal", "not existant", "2-b-unimodal", "4-b-unimodal" or
+NA_character_ .
 }
 \description{
 Given a compact support \code{[A, B]} and moments \code{m1, m2, ...} of a 
@@ -45,7 +45,7 @@ satisfies all inequalities that contain only moments up to order 4 is called
 \emph{4-b-unimodal}. The internal methods \code{is.2_b_unimodal} and
 \code{is.4_b_unimodal} test these inequalities. Method \code{is.unimodal}
 performs these checks, depending on the number of given distributions. A
-4-b-unimodal distribution can still be nonunimodal (see the examples below).
+2-b- or 4-b-unimodal distribution can still be nonunimodal (see the examples below).
 But a failure of these tests assures the distribution not to be unimodal.
 }
 \examples{
