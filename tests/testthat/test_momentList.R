@@ -50,15 +50,16 @@ test_that("cov works for n > 1", {
 })
 
 test_that("cov uses transformMoment appropriately", {
-  skip("not implemented yet")
   
-  mList <- momentList(rawMomentOrders = expand.grid(list(0:2, 0:2)),
-                      rawMoments = as.list(letters[1:9]))
-  
-  cov <- cov(mList)
-  expect_equal(cov, list(list("c", "e", "k"),
-                         list("e", "g", "m"),
-                         list("k", "m", "s")))
+  suppressWarnings(
+    mList <- momentList(rawMomentOrders = expand.grid(list(0:2, 0:2)),
+                        rawMoments = as.list(letters[1:9]))
+  )
+  suppressWarnings(
+    cov <- cov(mList)
+  )
+  expect_equal(cov, list(list(quote(b^2 * (a - 2) + c), quote (b*d * (a - 2) + e)),
+                         list(quote(b*d * (a - 2) + e), quote (d^2 * (a - 2) + g))))
 })
 
 test_that("cov works for n = 1", {
@@ -71,4 +72,17 @@ test_that("cov works for n = 1", {
   
   cov <- cov(mList)
   expect_equal(cov, list(list("C")))
+  
+  # with transform moment
+  suppressWarnings(
+  mList <- momentList(rawMomentOrders = cbind(c(0, 1, 2)),
+                      rawMoments = list("A", "m1", "B"),
+                      centralMomentOrders = cbind(c(0, 1)),
+                      centralMoments = list(1, 0))
+  )
+  suppressWarnings(
+    cov <- cov(mList)
+  )
+  expect_equal(cov, list(list(quote(B + m1^2 * (A - 2)))))
+  
 })

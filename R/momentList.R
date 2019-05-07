@@ -197,21 +197,25 @@ cov.default <- function(x, y = NULL, use = "everything",
 
 #' @rdname momentList
 #' @export
-cov.momentList <- function(x){
+cov.momentList <- function(x, ...){
   
   n <- ifelse(length(x$centralMoments) > 0, 
               ncol(x$centralMomentOrders), 
               ncol(x$rawMomentOrders))
-
+ 
   covOrder <- expand.grid(lapply(1:n, function(i) 0:2))
   covOrder <- covOrder[which(rowSums(covOrder) == 2),]
   covOrderMissing <- is.na(prodlim::row.match(covOrder, x$centralMomentOrders))
   
   for(i in seq_along(covOrderMissing)){
     if(covOrderMissing[i]){
-      x <- transformMoment(order = as.numeric(covOrder[i, ]),
+      if(n == 1)
+        order <- as.numeric(covOrder[i])
+      else
+        order <- as.numeric(covOrder[i, ])
+      x <- transformMoment(order = order,
                            type = "central",
-                           momentList = x)  
+                           momentList = x, ...)  
     }
   }
   
