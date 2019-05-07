@@ -50,8 +50,8 @@ new_momentList <- function(rawMomentOrders = NULL,
   structure(list(rawMomentOrders = rawMomentOrders,
                  rawMoments = rawMoments,
                  centralMomentOrders = centralMomentOrders,
-                 centralMoments = centralMoments,
-                 class = "momentList"))
+                 centralMoments = centralMoments),
+                 class = "momentList")
 }
 
 

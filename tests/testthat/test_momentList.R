@@ -1,6 +1,28 @@
 context("momentList")
 #t1 tests für validate_momentList
 
+test_that("returned object is of class momentList", {
+  
+  mList <- new_momentList(rawMomentOrders = cbind(c(3, 1, 5)),
+                          rawMoments = list("A", "m1", "B"),
+                          centralMomentOrders = cbind(c(0, 1, 2)),
+                          centralMoments = list(1, 0, "C"))
+  expect_identical(class(mList), "momentList")
+  
+  mList <- momentList(rawMomentOrders = cbind(c(3, 1, 5)),
+                      rawMoments = list("A", "m1", "B"),
+                      centralMomentOrders = cbind(c(0, 1, 2)),
+                      centralMoments = list(1, 0, "C"))
+  expect_identical(class(mList), "momentList")
+  
+  mList <- validate_momentList(mList)
+  expect_identical(class(mList), "momentList")
+  
+  mList <- transformMoment(order = 3, type = "central", momentList = mList)
+  expect_identical(class(mList), "momentList")
+})
+
+
 test_that("mean works", {
   
   mList <- structure(list(rawMomentOrders = rbind(1:3, diag(3), 4:6),
