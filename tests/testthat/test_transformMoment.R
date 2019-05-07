@@ -10,13 +10,11 @@ test_that("transformMoment works for n = 3, type = 'raw' and all central moments
                           centralMoments = as.list(letters[1:12])),
                      class = "momentList")
   
-  expect_warning( # moments of order 0 should be 1 and central moments of order 1 should be 0
-    res1 <- transformMoment(order = c(1,1,2),
-                            type = 'raw',
-                            closure = "",
-                            momentList = mList,
-                            simplify = FALSE)
-  )
+  res1 <- transformMoment(order = c(1,1,2),
+                          type = 'raw',
+                          closure = "",
+                          momentList = mList,
+                          simplify = FALSE)
   
   momentRaw <- quote(1 * ("m1"^1 * "m2"^1 * "m3"^2) * ("a") + 
                      1 * ("m1"^0 * "m2"^1 * "m3"^2) * ("b") + 
@@ -54,13 +52,11 @@ test_that("transformMoment works for n = 3, type = 'central' and all raw moments
                           centralMoments = list()),
                      class = "momentList")
   
-  expect_warning( # moments of order 0 should be 1 and central moments of order 1 should be 0
   res1 <- transformMoment(order = c(1,1,2),
                           type = 'central',
                           closure = "",
                           momentList = mList,
                           simplify = FALSE)
-  )
   
   momentCentr <- quote(1 * ("b"^1 * "c"^1 * "e"^2) * ("a") + 
                        -1 * ("b"^0 * "c"^1 * "e"^2) * ("b") + 

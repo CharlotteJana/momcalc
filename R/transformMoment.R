@@ -42,7 +42,7 @@
 transformMoment <- function(order, type, momentList, 
                             closure = "zero", simplify = TRUE){
   
-  momentList <- validate_momentList(momentList)
+  momentList <- validate_momentList(momentList, warnings = FALSE)
   
   p <- order
   n <- length(p)

@@ -13,9 +13,10 @@ new_momentList(rawMomentOrders = NULL, rawMoments = list(),
   centralMomentOrders = NULL, centralMoments = list())
 
 momentList(rawMomentOrders = NULL, rawMoments = list(),
-  centralMomentOrders = NULL, centralMoments = list())
+  centralMomentOrders = NULL, centralMoments = list(),
+  warnings = TRUE)
 
-validate_momentList(x)
+validate_momentList(x, warnings = TRUE)
 
 \method{mean}{momentList}(x, ...)
 
@@ -29,6 +30,8 @@ validate_momentList(x)
 \item{centralMomentOrders}{matrix or data.frame. Every row gives the order of a central moment that is already known.}
 
 \item{centralMoments}{list. The i-th entry is the central Moment of order \code{centralMomentOrders[i, ]}.}
+
+\item{warnings}{bool. If FALSE, warnings about moments of order 0 and 1 will be suppressed.}
 
 \item{x}{object of class \code{momentList}}
 

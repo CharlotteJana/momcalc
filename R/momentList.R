@@ -32,6 +32,7 @@
 #' @param centralMoments list. The i-th entry is the central Moment of order \code{centralMomentOrders[i, ]}.
 #' @param rawMomentOrders matrix or data.frame. Every row gives the order of a raw moment that is already known.
 #' @param rawMoments list. The i-th entry is the raw Moment of order \code{rawMomentOrders[i, ]}.
+#' @param warnings bool. If FALSE, warnings about moments of order 0 and 1 will be suppressed.
 #' @param x object of class \code{momentList}
 #' @param ... additional arguments to function mean. They are currently not used.
 #' @name momentList
@@ -60,7 +61,8 @@ new_momentList <- function(rawMomentOrders = NULL,
 momentList <- function(rawMomentOrders = NULL,
                        rawMoments = list(),
                        centralMomentOrders = NULL,
-                       centralMoments = list()){
+                       centralMoments = list(), 
+                       warnings = TRUE){
   
   if(is.null(rawMomentOrders) & is.null(centralMomentOrders))
     stop("Please provide either values for 'rawMomentOrders' and 'rawMoments'
@@ -81,14 +83,14 @@ momentList <- function(rawMomentOrders = NULL,
                           centralMomentOrders = centralMomentOrders,
                           centralMoments = centralMoments)
   
-  return(validate_momentList(mList))
+  return(validate_momentList(mList, warnings))
 }
 
 ####### validate_momentList ######
 
 #' @rdname momentList 
 #' @export
-validate_momentList <- function(x){
+validate_momentList <- function(x, warnings = TRUE){
   
   stopifnot(is.list(x$rawMoments))
   stopifnot(is.list(x$centralMoments))
@@ -126,7 +128,7 @@ validate_momentList <- function(x){
     unitVector[n-i+1] <- 1
     rowIndex <- prodlim::row.match(unitVector, x$centralMomentOrders)
     if(!is.na(rowIndex)){
-      if(x$centralMoments[[rowIndex]] != 0) 
+      if(x$centralMoments[[rowIndex]] != 0 & warnings) 
         warning("Central moments of order 1 should be 0.")
     }
     else{
@@ -142,11 +144,11 @@ validate_momentList <- function(x){
   indexCentr <- prodlim::row.match(rep(0, n), x$centralMomentOrders)
   
   if(!is.na(indexRaw)){
-    if(x$rawMoments[[indexRaw]] != 1)
+    if(x$rawMoments[[indexRaw]] != 1 & warnings)
       warning("Moments of order 0 should have value 1.")
   }
   if(!is.na(indexCentr)){
-    if(x$centralMoments[[indexCentr]] != 1)
+    if(x$centralMoments[[indexCentr]] != 1 & warnings)
       warning("Moments of order 0 should have value 1.")
   }
   
@@ -168,13 +170,20 @@ validate_momentList <- function(x){
 #' @rdname momentList
 #' @export
 mean.momentList <- function(x, ...){
+  
   n <- ncol(x$rawMomentOrders)
+  stopifnot(n > 0)
+  
   mean <- list()
   
-  for(i in 1:n){
+  for(i in seq_len(n)){
     row <- rep(0, n)
     row[i] <- 1
-    mean[[i]] <- x$rawMoments[[prodlim::row.match(row, x$rawMomentOrders)]]
+    rowIndex <- prodlim::row.match(row, x$rawMomentOrders)
+    if(is.na(rowIndex))
+      mean[[i]] <- NA
+    else
+      mean[[i]] <- x$rawMoments[[rowIndex]]
   }
   
   return(mean)
@@ -197,7 +206,7 @@ cov.default <- function(x, y = NULL, use = "everything",
 
 #' @rdname momentList
 #' @export
-cov.momentList <- function(x, ...){
+cov.momentList <- function(x){
   
   n <- ifelse(length(x$centralMoments) > 0, 
               ncol(x$centralMomentOrders), 
@@ -212,10 +221,10 @@ cov.momentList <- function(x, ...){
       if(n == 1)
         order <- as.numeric(covOrder[i])
       else
-        order <- as.numeric(covOrder[i, ])
+        order <- as.numeric(covOrder[i, ]) #t1 testen was passiert, wenn transform moment das nicht hat
       x <- transformMoment(order = order,
                            type = "central",
-                           momentList = x, ...)  
+                           momentList = x)  
     }
   }
   
@@ -228,7 +237,11 @@ cov.momentList <- function(x, ...){
       row[i] <- row[i] + 1
       row[j] <- row[j] + 1
       
-      cov[[i]][[j]] <- x$centralMoments[[prodlim::row.match(row, x$centralMomentOrders)]]
+      rowIndex <- prodlim::row.match(row, x$centralMomentOrders)
+      if(is.na(rowIndex))
+        cov[[i]][[j]] <- NA 
+      else 
+        cov[[i]][[j]] <- x$centralMoments[[rowIndex]]
       cov[[j]][[i]] <- cov[[i]][[j]]
     }
   }
