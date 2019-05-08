@@ -141,52 +141,62 @@ symbolicMoments <- function(distribution, missingOrders,
   # gamma
   if(distribution == "gamma"){
     
-    # define parameters beta and A
-    beta <- lapply(1:n, function(i) bquote(.(cov[[i]][[i]])/.(mean[[i]])))
-    A_indexes <- as.data.frame(t(cbind(utils::combn(1:n, 2), 
-                                       matrix(rep(1:n, each = 2), nrow = 2))))
-    A <- list()
-    for(r in 1:nrow(A_indexes)){
-      i <- A_indexes[r, 1]
-      j <- A_indexes[r, 2]
-      if(i != j){
-        A <- append(A, bquote(.(cov[[i]][[j]])/(.(beta[[i]])*.(beta[[j]]))))
-      }
-      else{
-        sum_indexes <- which(rowSums(apply(A_indexes, 2, match, i, nomatch = 0)) == 1)
-        sum <- Reduce(function(a,b) bquote(.(a)+.(b)), A[sum_indexes])
-        A <- append(A, bquote(.(mean[[i]])^2/.(cov[[i]][[i]]) - .(sum)))
+    if(n == 1){
+      beta <- bquote(.(cov[[1]][[1]])/.(mean[[1]]))
+      alpha <- bquote(.(mean[[1]])^2/.(cov[[1]][[1]]))
+      for(i in seq_len(nrow(missingOrders))){
+        order <- as.numeric(missingOrders[i, ])
+        missingMoments[[i]] <- bquote(.(beta)^.(order)*gamma(.(order)+.(alpha))/gamma(.(alpha)))
       }
     }
-    
-    # calculate moments
-    for(i in seq_len(nrow(missingOrders))){
-      order <- as.numeric(missingOrders[i, ])
-      polynomials <- list()
-      for(j in 1:n){
-        poly_indexes <- rowSums(apply(A_indexes, 2, match, j, nomatch = 0)) >= 1
-        polynomials <- append(polynomials, 
-          list(spray::linear(as.numeric(poly_indexes), 1)^order[j]))
-      }
-      polynomials <- Reduce('*', polynomials)
-      summands <- list()
-      for(r in seq_len(nrow(polynomials$index))){
-        row <- polynomials$index[r, ]
-        factors <- list(polynomials$value[r])
-        for(k in seq_along(row)){
-          if(row[k] == 1)
-            factors <- append(factors, bquote(.(A[[k]])))
-          if(row[k] > 1)
-            factors <- append(factors, 
-              bquote(factorial(.(A[[k]])+.(row[k])-1)/factorial(.(A[[k]])-1)))
+    else{
+      # define parameters beta and A
+      beta <- lapply(1:n, function(i) bquote(.(cov[[i]][[i]])/.(mean[[i]])))
+      A_indexes <- as.data.frame(t(cbind(utils::combn(1:n, 2), 
+                                         matrix(rep(1:n, each = 2), nrow = 2))))
+      A <- list()
+      for(r in 1:nrow(A_indexes)){
+        i <- A_indexes[r, 1]
+        j <- A_indexes[r, 2]
+        if(i != j){
+          A <- append(A, bquote(.(cov[[i]][[j]])/(.(beta[[i]])*.(beta[[j]]))))
         }
-        product <- Reduce(function(a,b) bquote(.(a)*.(b)), factors)
-        summands <- append(summands, product)
+        else{
+          sum_indexes <- which(rowSums(apply(A_indexes, 2, match, i, nomatch = 0)) == 1)
+          sum <- Reduce(function(a,b) bquote(.(a)+.(b)), A[sum_indexes])
+          A <- append(A, bquote(.(mean[[i]])^2/.(cov[[i]][[i]]) - .(sum)))
+        }
       }
-      sum <-  Reduce(function(a,b) bquote(.(a)+.(b)), summands)
-      result <- append(sum, lapply(seq_along(beta), function(j) 
-        bquote(.(beta[[j]])^.(order[j])))) # times beta^order
-      missingMoments[[i]] <- Reduce(function(a,b) bquote(.(a)*.(b)), result)
+      
+      # calculate moments
+      for(i in seq_len(nrow(missingOrders))){
+        order <- as.numeric(missingOrders[i, ])
+        polynomials <- list()
+        for(j in 1:n){
+          poly_indexes <- rowSums(apply(A_indexes, 2, match, j, nomatch = 0)) >= 1
+          polynomials <- append(polynomials, 
+            list(spray::linear(as.numeric(poly_indexes), 1)^order[j]))
+        }
+        polynomials <- Reduce('*', polynomials)
+        summands <- list()
+        for(r in seq_len(nrow(polynomials$index))){
+          row <- polynomials$index[r, ]
+          factors <- list(polynomials$value[r])
+          for(k in seq_along(row)){
+            if(row[k] == 1)
+              factors <- append(factors, bquote(.(A[[k]])))
+            if(row[k] > 1)
+              factors <- append(factors, 
+                bquote(factorial(.(A[[k]])+.(row[k])-1)/factorial(.(A[[k]])-1)))
+          }
+          product <- Reduce(function(a,b) bquote(.(a)*.(b)), factors)
+          summands <- append(summands, product)
+        }
+        sum <-  Reduce(function(a,b) bquote(.(a)+.(b)), summands)
+        result <- append(sum, lapply(seq_along(beta), function(j) 
+          bquote(.(beta[[j]])^.(order[j])))) # times beta^order
+        missingMoments[[i]] <- Reduce(function(a,b) bquote(.(a)*.(b)), result)
+      }
     }
   }
   

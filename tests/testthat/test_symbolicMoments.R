@@ -103,6 +103,19 @@ test_that("distribution = 'lognormal' works for n = 2", {
   
 })
 
+test_that("distribution = 'gamma' works for n = 1", {
+  
+  order <- c(3, 8)
+  alpha <- 1.5
+  beta <- 2
+  
+  mom1 <- actuar::mgamma(order, shape = alpha, scale = beta)
+  mom2 <- symbolicMoments(distribution = "gamma", missingOrders = as.matrix(order, ncol = 1),
+                          var = alpha*beta^2, mean = alpha*beta, simplify = TRUE)
+  
+  expect_equal(mom1, mom2)
+})
+
 test_that("distribution = 'gamma' works for n = 2", {
   # this example is based on [Lak+15], Appendix B
   
