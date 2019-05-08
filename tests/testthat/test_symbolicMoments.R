@@ -78,7 +78,6 @@ test_that("distribution = 'lognormal' works for n = 1", {
   
   mean <- exp(meanlog+0.5*sdlog^2)
   var <- exp(2*meanlog+sdlog^2)*(exp(sdlog^2)-1)
-  symbolicMoments(distribution = 'lognormal', missingOrders = order, var = var, mean = mean)
   mom2 <- symbolicMoments(distribution = 'lognormal', missingOrders = order, var = var, mean = mean, simplify = FALSE)
   mom2 <- sapply(mom2, eval)
   mom3 <- symbolicMoments(distribution = 'lognormal', missingOrders = order, var = var, mean = mean, simplify = TRUE)
@@ -88,19 +87,19 @@ test_that("distribution = 'lognormal' works for n = 1", {
 })
 
 test_that("distribution = 'lognormal' works for n = 2", {
-  skip("doesn't work")
   
   cov <-  matrix(c(6, 2, 2, 4), nrow = 2)
-  mean <- c(3, 4)
+  mean <- c(2, 4)
   order <- c(2, 2)
   
-  mom1 <- 4*log(cov[1,2] - mean[1]*mean[2]) +
-          log(cov[1,1] - mean[1]^2) - 4*log(mean[1]) +
-          log(cov[2,2] - mean[2]^2) - 4*log(mean[2])
+  mom1 <- 4*log(cov[1,2] + mean[1]*mean[2]) +
+          log(cov[1,1] + mean[1]^2) - 4*log(mean[1]) +
+          log(cov[2,2] + mean[2]^2) - 4*log(mean[2])
+  mom1 <- exp(mom1)
   
   mom2 <- symbolicMoments(distribution = 'lognormal', missingOrders = order, 
-                          cov = cov, mean = mean, simplify = TRUE)
-  expect_identical(mom1, mom2[1])
+                          cov = cov, mean = mean, simplify = FALSE)
+  expect_identical(mom1, eval(mom2[[1]]))
   
 })
 

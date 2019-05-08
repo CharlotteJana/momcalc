@@ -110,18 +110,17 @@ symbolicMoments <- function(distribution, missingOrders,
   
   # lognormal
   if(distribution == "lognormal"){ 
-    sigma <- cov
+    sigma <- lapply(rep(NA, n), list) #t2 besser direkt mit raw moments
     mu <- list()
-    for(i in 1:n){
-      sigma[[i]][[i]] <- list(bquote(log(1+.(cov[[i]][[i]])/.(mean[i])^2)))
-      sigma[[i]][[i]] <- sigma[[i]][[i]][[1]]
-      mu[[i]] <- bquote(log(.(mean[i]))-0.5*.(sigma[[i]][[i]]))
-      for(j in seq_len(i-1)){
+    for(i in seq_len(n)){
+      for(j in seq_len(i)){
         sigma[[i]][[j]] <- bquote(
-          log(1 + .(cov[[i]][[j]])/exp(.(mu[[i]])+.(mu[[j]])+0.5*(.(sigma[[i]][[i]])*.(sigma[[j]][[j]]))))
+          log(.(cov[[i]][[j]]) + .(mean[[i]])*.(mean[[j]])) - 
+            log(.(mean[[i]])) - log(.(mean[[j]]))
           )
         sigma[[j]][[i]] <- sigma[[i]][[j]]
       }
+      mu[[i]] <- bquote(2*log(.(mean[[i]]))-0.5*log(.(cov[[i]][[i]])+.(mean[[i]])^2))
     }
     for(i in seq_len(nrow(missingOrders))){
       order <- as.numeric(missingOrders[i, ])
