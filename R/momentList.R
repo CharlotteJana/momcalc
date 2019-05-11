@@ -43,9 +43,9 @@ NULL
 
 #' @export
 #' @rdname momentList
-new_momentList <- function(rawMomentOrders = NULL,
+new_momentList <- function(rawMomentOrders = data.frame(),
                            rawMoments = list(),
-                           centralMomentOrders = NULL,
+                           centralMomentOrders = data.frame(),
                            centralMoments = list()){
   
   structure(list(rawMomentOrders = rawMomentOrders,
@@ -92,10 +92,14 @@ momentList <- function(rawMomentOrders = NULL,
 #' @export
 validate_momentList <- function(x, warnings = TRUE){
   
+  if(nrow(x$rawMomentOrders) == 0 & nrow(x$centralMomentOrders) == 0)
+    stop("Please provide either values for 'rawMomentOrders' and 'rawMoments'
+          or values for 'centralMomentOrders' and 'centralMoments'")
+  
   stopifnot(is.list(x$rawMoments))
   stopifnot(is.list(x$centralMoments))
-  stopifnot(is.matrix(x$rawMomentOrders) | is.data.frame(x$rawMomentOrders))
-  stopifnot(is.matrix(x$centralMomentOrders) | is.data.frame(x$centralMomentOrders))
+  stopifnot(is.matrix(x$rawMomentOrders) | is.data.frame(x$rawMomentOrders) | is.null(x$rawMomentOrders))
+  stopifnot(is.matrix(x$centralMomentOrders) | is.data.frame(x$centralMomentOrders) | is.null(x$centralMomentOrders))
   
   if(length(unique(x$rawMomentOrders)) != length(x$rawMomentOrders)){
     stop("Some rows in 'rawMomentOrders' appear several times. 
@@ -122,7 +126,10 @@ validate_momentList <- function(x, warnings = TRUE){
   
   # ------- check moments of order 1 -------
   
-  n <- ncol(x$rawMomentOrders)
+  n <- ifelse(length(x$centralMoments) > 0, 
+              ncol(x$centralMomentOrders), 
+              ncol(x$rawMomentOrders))
+  
   for(i in seq_len(n)){
     unitVector <- rep(0, n)
     unitVector[n-i+1] <- 1
