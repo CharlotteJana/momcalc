@@ -90,7 +90,7 @@ transformMoment <- function(order, type, momentList,
     moment <- symbolicMoments(distribution = closure, 
                               missingOrders = t(p),
                               mean = rep(0, n),
-                              cov = cov(momentList))[[1]]
+                              cov = extractCov(momentList))[[1]]
     
     momentList$centralMomentOrders <- rbind(momentList$centralMomentOrders, p)
     momentList$centralMoments <- append(momentList$centralMoments, moment)
@@ -119,8 +119,8 @@ transformMoment <- function(order, type, momentList,
     if(is.na(k_in_typeOrders[k_index]) & is.na(k_in_otherOrders[k_index])){
       momentCentral <- symbolicMoments(distribution = closure, 
                                        missingOrders = t(k),
-                                       mean = mean(momentList),
-                                       cov = cov(momentList))[[1]]
+                                       mean = extractMean(momentList),
+                                       cov = extractCov(momentList))[[1]]
       momentList$centralMomentOrders <- rbind(momentList$centralMomentOrders, k)
       momentList$centralMoments <- append(momentList$centralMoments, 
                                           momentCentral)

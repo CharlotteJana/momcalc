@@ -22,7 +22,7 @@ test_that("returned object is of class momentList", {
   expect_identical(class(mList), "momentList")
 })
 
-test_that("mean works", {
+test_that("extractMean works", {
   
   mList <- momentList(rawMomentOrders = rbind(1:3, diag(3), 4:6),
                       rawMoments = list("A", "m1", "m2", "m3", "B"),
@@ -30,7 +30,7 @@ test_that("mean works", {
                       centralMoments = append(as.list(letters), "lastElement"),
                       warnings = FALSE)
   
-  mean <- mean(mList)
+  mean <- extractMean(mList)
   expect_equal(mean, list("m1", "m2", "m3"))
   
   mList <- momentList(rawMomentOrders = rbind(c(1, 0, 0)),
@@ -38,10 +38,10 @@ test_that("mean works", {
                       centralMomentOrders = expand.grid(list(0:2, 0:2, 0:2)),
                       centralMoments = append(as.list(letters), "lastElement"),
                       warnings = FALSE)
-  expect_equal(mean(mList), list("m1", NA, NA))
+  expect_equal(extractMean(mList), list("m1", NA, NA))
 })
 
-test_that("cov works for n > 1", {
+test_that("extractCov works for n > 1", {
   
   mList <- momentList(rawMomentOrders = rbind(1:3, diag(3), 4:6),
                       rawMoments = list("A", "m1", "m2", "m3", "B"),
@@ -49,7 +49,7 @@ test_that("cov works for n > 1", {
                       centralMoments = append(as.list(letters), "lastElement"),
                       warnings = FALSE)
   
-  cov <- cov(mList)
+  cov <- extractCov(mList)
   expect_equal(cov, list(list("c", "e", "k"),
                          list("e", "g", "m"),
                          list("k", "m", "s")))
@@ -59,12 +59,12 @@ test_that("cov works for n > 1", {
                       rawMoments = as.list(letters[1:9]), 
                       warnings = FALSE)
   
-  cov <- cov(mList)
+  cov <- extractCov(mList)
   expect_equal(cov, list(list(quote(b^2 * (a - 2) + c), quote (b*d * (a - 2) + e)),
                          list(quote(b*d * (a - 2) + e), quote (d^2 * (a - 2) + g))))
 })
 
-test_that("cov works for n = 1", {
+test_that("extractCov works for n = 1", {
   
   mList <- structure(list(rawMomentOrders = cbind(c(3, 1, 5)),
                           rawMoments = list("A", "m1", "B"),
@@ -72,7 +72,7 @@ test_that("cov works for n = 1", {
                           centralMoments = list(1, 0, "C")),
                      class = "momentList")
   
-  cov <- cov(mList)
+  cov <- extractCov(mList)
   expect_equal(cov, list(list("C")))
   
   # with transform moment
@@ -82,6 +82,6 @@ test_that("cov works for n = 1", {
                       centralMoments = list(1, 0),
                       warnings = FALSE)
 
-  cov <- cov(mList)
+  cov <- extractCov(mList)
   expect_equal(cov, list(list(quote(B + m1^2 * (A - 2)))))
 })

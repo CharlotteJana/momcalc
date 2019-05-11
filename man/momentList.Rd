@@ -7,6 +7,8 @@
 \alias{momentlist}
 \alias{cov.momentList}
 \alias{mean.momentList}
+\alias{extractMean}
+\alias{extractCov}
 \title{Class momentList}
 \usage{
 new_momentList(rawMomentOrders = NULL, rawMoments = list(),
@@ -18,9 +20,9 @@ momentList(rawMomentOrders = NULL, rawMoments = list(),
 
 validate_momentList(x, warnings = TRUE)
 
-\method{mean}{momentList}(x, ...)
+extractMean(x, ...)
 
-\method{cov}{momentList}(x)
+extractCov(x)
 }
 \arguments{
 \item{rawMomentOrders}{matrix or data.frame. Every row gives the order of a raw moment that is already known.}
@@ -61,8 +63,8 @@ various checks on the elements. Most of them are executed within function
 \code{validate_momentList}. This function particularly checks for moments of order
 one and zero. If they contain false values, a warning will be thrown. If moments of these 
 orders are not contained in \code{momentList}, they are added automatically. \cr
-The functions \code{mean} and \code{cov} don't do calculations. They pick the
-appropriate values out of momentList in case they exist. Function \code{cov} may
-transform raw moments of order two into covariances, if the corresponding central
-moments are not given.
+The functions \code{extractMean} and \code{extractCov} pick the means or covariances
+out of momentList in case they exist. Function \code{extracCov} may transform raw 
+moments of order two into covariances, if the corresponding central moments are not 
+given.
 }

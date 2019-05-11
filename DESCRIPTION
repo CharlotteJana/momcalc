@@ -1,6 +1,6 @@
 Package: momcalc
 Type: Package
-Title: Symbolic moment calculation
+Title: Symbolic Moment Calculation
 Version: 0.0-1
 Author: Charlotte Jana
 Maintainer: Charlotte Jana <charlotte.jana@t-online.de>
@@ -23,5 +23,5 @@ Imports: actuar,
     symmoments
 Suggests: testthat
 RdMacros: Rdpack
-Remotes: CharlotteJana/pdmpsim
+Remotes: CharlotteJana/momcalc
 RoxygenNote: 6.1.1

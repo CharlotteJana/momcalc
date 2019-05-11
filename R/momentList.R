@@ -23,10 +23,10 @@
 #' \code{validate_momentList}. This function particularly checks for moments of order
 #' one and zero. If they contain false values, a warning will be thrown. If moments of these 
 #' orders are not contained in \code{momentList}, they are added automatically. \cr
-#' The functions \code{mean} and \code{cov} don't do calculations. They pick the
-#' appropriate values out of momentList in case they exist. Function \code{cov} may
-#' transform raw moments of order two into covariances, if the corresponding central
-#' moments are not given.
+#' The functions \code{extractMean} and \code{extractCov} pick the means or covariances
+#' out of momentList in case they exist. Function \code{extracCov} may transform raw 
+#' moments of order two into covariances, if the corresponding central moments are not 
+#' given.
 #' 
 #' @param centralMomentOrders matrix or data.frame. Every row gives the order of a central moment that is already known.
 #' @param centralMoments list. The i-th entry is the central Moment of order \code{centralMomentOrders[i, ]}.
@@ -164,12 +164,12 @@ validate_momentList <- function(x, warnings = TRUE){
   return(x)
 }
 
-####### mean #######
+####### extractMean #######
 
 
 #' @rdname momentList
 #' @export
-mean.momentList <- function(x, ...){
+extractMean <- function(x, ...){
   
   n <- ncol(x$rawMomentOrders)
   stopifnot(n > 0)
@@ -189,24 +189,11 @@ mean.momentList <- function(x, ...){
   return(mean)
 }
 
-###### cov ######
-
-#' @export
-cov <- function(x, y = NULL, use = "everything", 
-                method = c("pearson", "kendall", "spearman"), ...){
-  UseMethod("cov")
-}
-
-#' @export
-cov.default <- function(x, y = NULL, use = "everything", 
-                        method = c("pearson", "kendall", "spearman"), ...){
-   stats::cov(x, y = NULL, use = "everything", 
-              method = c("pearson", "kendall", "spearman"), ...)
-}
+###### extractCov ######
 
 #' @rdname momentList
 #' @export
-cov.momentList <- function(x){
+extractCov <- function(x){
   
   n <- ifelse(length(x$centralMoments) > 0, 
               ncol(x$centralMomentOrders), 
