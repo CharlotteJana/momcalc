@@ -17,7 +17,8 @@ of X. The following values are possible:
 \item \code{"zero"} sets all moments to 0,
 \item \code{"normal"} calculates the moments of a centralized multivariate normal distribution,
 \item \code{"lognormal"} calculates the raw moments of a multivariate lognormal distribution,
-\item \code{"gamma"} calculates the raw moments of a multivariate gamma distribution.
+\item \code{"gamma"} calculates the raw moments of a multivariate gamma distribution,
+\item \code{"NA"} sets all moments to NA.
 }}
 
 \item{missingOrders}{numeric vector or matrix. Each row gives the order

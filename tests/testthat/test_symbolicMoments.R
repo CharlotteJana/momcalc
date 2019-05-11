@@ -4,6 +4,8 @@ context("symbolic moments")
 
 test_that("errors are thrown when wrong input", {
   
+  expect_error(symbolicMoments(distribution = "bla", cov = cov, missingOrders = 1:3))
+  
   cov <-  matrix(c(1, -1, 3, 2, 4, 5, 3, 5, 6), nrow = 3) # not symmetric
   expect_error(symbolicMoments(distribution = 'normal', cov = cov, missingOrders = 1:3))
   expect_identical(symbolicMoments(distribution = 'zero', cov = cov, missingOrders = 1:3), 
@@ -12,12 +14,17 @@ test_that("errors are thrown when wrong input", {
   cov[2] <- 2 # now it is symmetric
   expect_error(symbolicMoments(distribution = 'normal', cov = cov, missingOrders = 1:2)) # wrong dimensions of missingOrders
   expect_error(symbolicMoments(distribution = 'gamma', cov = cov, missingOrders = 1:3, mean = 1:2)) # wrong dimensions of mean
-  
+  expect_error(symbolicMoments(distribution = 'bla', cov = cov, missingOrders = 1:3)) # wrong distribution
 })
 
 test_that("distribution = 'zero' works", {
   moment <- symbolicMoments(distribution = 'zero', missingOrders = matrix(1:6, nrow = 2))
   expect_equal(moment, c(0, 0))
+})
+
+test_that("distribution = 'NA' works", {
+  moment <- symbolicMoments(distribution = 'NA', missingOrders = matrix(1:3, nrow = 1))
+  expect_equal(moment, NA)
 })
 
 test_that("distribution = 'normal' works", {

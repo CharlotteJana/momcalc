@@ -23,7 +23,8 @@
 #' \item \code{"zero"} sets all moments to 0,
 #' \item \code{"normal"} calculates the moments of a centralized multivariate normal distribution,
 #' \item \code{"lognormal"} calculates the raw moments of a multivariate lognormal distribution,
-#' \item \code{"gamma"} calculates the raw moments of a multivariate gamma distribution.
+#' \item \code{"gamma"} calculates the raw moments of a multivariate gamma distribution,
+#' \item \code{"NA"} sets all moments to NA.
 #' } 
 #' @param simplify bool indiciating if the resulting expressions should be simplified.
 #' Function \code{\link[Deriv]{Simplify}} from package \pkg{Deriv} is used for simplification.
@@ -60,6 +61,14 @@ symbolicMoments <- function(distribution, missingOrders,
   # zero: all moments = 0
   if(distribution == "zero"){
     missingMoments <- rep(list(0), nrow(missingOrders))
+    if(simplify)
+      missingMoments <- simplify2array(missingMoments)
+    return(missingMoments)
+  }
+  
+  # zero: all moments = NA
+  if(distribution == "NA"){
+    missingMoments <- rep(list(NA), nrow(missingOrders))
     if(simplify)
       missingMoments <- simplify2array(missingMoments)
     return(missingMoments)

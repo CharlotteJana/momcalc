@@ -1,6 +1,4 @@
 context("transformMoment")
-#t1 tests für validate_momentList
-#t1 tests für momentClosure
 
 test_that("transformMoment works for n = 3, type = 'raw' and all central moments given", {
   
@@ -436,8 +434,4 @@ test_that("transformMoment needs raw moments of order 1 as input", {
                     closure = "",
                     momentList = mList)
   ))
-})
-
-test_that("transformMoment does not need central moments of order 0 and 1 as input", {
-  skip("not implemented yet")
 })

@@ -43,9 +43,9 @@ NULL
 
 #' @export
 #' @rdname momentList
-new_momentList <- function(rawMomentOrders = data.frame(),
+new_momentList <- function(rawMomentOrders = NULL,
                            rawMoments = list(),
-                           centralMomentOrders = data.frame(),
+                           centralMomentOrders = NULL,
                            centralMoments = list()){
   
   structure(list(rawMomentOrders = rawMomentOrders,
@@ -92,7 +92,7 @@ momentList <- function(rawMomentOrders = NULL,
 #' @export
 validate_momentList <- function(x, warnings = TRUE){
   
-  if(nrow(x$rawMomentOrders) == 0 & nrow(x$centralMomentOrders) == 0)
+  if(is.null(x$rawMomentOrders) & is.null(x$centralMomentOrders))
     stop("Please provide either values for 'rawMomentOrders' and 'rawMoments'
           or values for 'centralMomentOrders' and 'centralMoments'")
   
@@ -109,19 +109,22 @@ validate_momentList <- function(x, warnings = TRUE){
     stop("Some rows in 'centralMomentOrders' appear several times. 
          They should only appear once.")
   }
-  if(nrow(x$rawMomentOrders) != length(x$rawMoments)){
-    stop("The number of elements in 'rawMoments' should be equal to
-         the number of rows in 'rawMomentOrders'.")
+  if(!is.null(x$rawMomentOrders))
+    if(nrow(x$rawMomentOrders) != length(x$rawMoments)){
+      stop("The number of elements in 'rawMoments' should be equal to
+           the number of rows in 'rawMomentOrders'.")
   }
-  if(nrow(x$centralMomentOrders) != length(x$centralMoments)){
-    stop("The number of elements in 'centralMoments' should be equal to
-         the number of rows in 'centralMomentOrders'.")
+  if(!is.null(x$centralMomentOrders)){
+    if(nrow(x$centralMomentOrders) != length(x$centralMoments)){
+      stop("The number of elements in 'centralMoments' should be equal to
+           the number of rows in 'centralMomentOrders'.")
+    }
   }
-  if(nrow(x$rawMomentOrders) != 0 &
-     nrow(x$centralMomentOrders) != 0 & 
-     ncol(x$rawMomentOrders) != ncol(x$centralMomentOrders)){
-    stop("The number of columns in 'rawMomentOrders' and 'centralMomentOrders'
-         should be identical.")
+  if(!is.null(x$rawMomentOrders) & !is.null(x$centralMomentOrders)){
+    if(ncol(x$rawMomentOrders) != ncol(x$centralMomentOrders)){
+      stop("The number of columns in 'rawMomentOrders' and 'centralMomentOrders'
+           should be identical.")
+    }
   }
   
   # ------- check moments of order 1 -------
@@ -133,7 +136,10 @@ validate_momentList <- function(x, warnings = TRUE){
   for(i in seq_len(n)){
     unitVector <- rep(0, n)
     unitVector[n-i+1] <- 1
-    rowIndex <- prodlim::row.match(unitVector, x$centralMomentOrders)
+    if(!is.null(x$centralMomentOrders))
+      rowIndex <- prodlim::row.match(unitVector, x$centralMomentOrders)
+    else
+      rowIndex <- NA
     if(!is.na(rowIndex)){
       if(x$centralMoments[[rowIndex]] != 0 & warnings) 
         warning("Central moments of order 1 should be 0.")
@@ -147,7 +153,11 @@ validate_momentList <- function(x, warnings = TRUE){
   
   #------- check moments of order 0 -------
   
-  indexRaw <- prodlim::row.match(rep(0, n), x$rawMomentOrders)
+  if(!is.null(x$rawMomentOrders))
+    indexRaw <- prodlim::row.match(rep(0, n), x$rawMomentOrders)
+  else
+    indexRaw <- NA
+  
   indexCentr <- prodlim::row.match(rep(0, n), x$centralMomentOrders)
   
   if(!is.na(indexRaw)){
@@ -158,7 +168,6 @@ validate_momentList <- function(x, warnings = TRUE){
     if(x$centralMoments[[indexCentr]] != 1 & warnings)
       warning("Moments of order 0 should have value 1.")
   }
-  
   if(is.na(indexRaw)){
     x$rawMomentOrders <- rbind(rep(0, n), x$rawMomentOrders)
     x$rawMoments <- append(1, x$rawMoments)
@@ -215,13 +224,13 @@ extractCov <- function(x){
       if(n == 1)
         order <- as.numeric(covOrder[i])
       else
-        order <- as.numeric(covOrder[i, ]) #t1 testen was passiert, wenn transform moment das nicht hat
+        order <- as.numeric(covOrder[i, ])
       x <- transformMoment(order = order,
                            type = "central",
-                           momentList = x)  
+                           momentList = x,
+                           closure = "NA")  
     }
   }
-  
   cov <- list()
   for(i in 1:n){
     cov[[i]] <- list()
@@ -232,10 +241,7 @@ extractCov <- function(x){
       row[j] <- row[j] + 1
       
       rowIndex <- prodlim::row.match(row, x$centralMomentOrders)
-      if(is.na(rowIndex))
-        cov[[i]][[j]] <- NA 
-      else 
-        cov[[i]][[j]] <- x$centralMoments[[rowIndex]]
+      cov[[i]][[j]] <- x$centralMoments[[rowIndex]]
       cov[[j]][[i]] <- cov[[i]][[j]]
     }
   }
