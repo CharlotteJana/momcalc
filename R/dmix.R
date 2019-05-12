@@ -28,9 +28,13 @@ dmix <- function(lower = -Inf, upper = Inf, distrib, weights){
   
   weights <- weights/sum(weights)
   function(x){
-    h <- sapply(1:n, function(i) 
-      weights[i]*do.call("dtrunc", c(x = list(x), distrib[[i]], 
+    h <- vapply(1:n, 
+                function(i){
+                  weights[i]*do.call("dtrunc", 
+                                     c(x = list(x), distrib[[i]], 
                                      a = lower, b = upper))
+                },
+                numeric(length(x))
     )
     rowSums(h)
   }
@@ -45,11 +49,14 @@ mmix <- function(order = 1:4, lower = -Inf, upper = Inf, distrib, weights){
   if(missing(weights)) weights <- rep(1/n, n)
   
   weights <- weights/sum(weights)
-  h <- sapply(1:n, function(i) 
-    weights[i]*do.call("mtrunc", c(list(order = order), 
-                                   a = lower, 
-                                   b = upper, 
-                                   distrib[[i]]))
+  h <- vapply(1:n, 
+              function(i){ 
+                weights[i]*do.call("mtrunc", c(list(order = order), 
+                                               a = lower, 
+                                               b = upper, 
+                                               distrib[[i]]))
+              },
+              numeric(length(order))
   )
   if(length(order) > 1)
     return(rowSums(h))

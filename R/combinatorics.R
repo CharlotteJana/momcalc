@@ -33,6 +33,6 @@ dfactorial <- function(n){
 #' @param k a vector of non negative, natural numbers
 #' @export
 multinomial <- function(m, k){
-  a <- sapply(k, factorial)
+  a <- vapply(k, factorial, numeric(1))
   return(factorial(m)/prod(a))
 }

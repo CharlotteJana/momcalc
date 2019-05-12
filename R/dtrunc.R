@@ -22,7 +22,7 @@
 #' curve(dtrunc(x, spec = "norm", a = -Inf, b = 1), -10, 2)
 #' 
 #' \dontrun{
-#' # different results for intervals outside the support of the density function:#' 
+#' # different results for intervals outside the support of the density function: 
 #' truncdist::dtrunc(x, spec = "norm", a = 20, b = 30) # gives error
 #' momcalc::dtrunc(x, spec = "norm", a = 20, b = 30) # gives only a warning}
 #' @importFrom utils str
@@ -51,7 +51,8 @@ dtrunc <- function (x, spec, a = -Inf, b = Inf, ...) {
 #' @examples
 #' mtrunc(1:6, spec = "norm")
 #' mtrunc(1:6, spec = "norm", b = 0)
-#' @seealso \code{\link{dtrunc}} for the probability distribution of a truncated variable.
+#' @seealso \code{\link{dtrunc}} for the probability distribution of a 
+#' truncated variable.
 #' @importFrom actuar mnorm mlnorm mexp munif
 #' @importFrom stats integrate
 #' @export
@@ -71,10 +72,15 @@ mtrunc <- function (order, spec, a = -Inf, b = Inf , ...){
       stop("this is not a distribution")
   }
   else{
-  #message("Direct integration is used.")
-  sapply( order, 
-    function(i) integrate( 
-      Vectorize(function(x) x^i * dtrunc(x, spec = spec, a = a, b = b, ...)), 
-      lower=a, upper=b)$value)
+  message("Direct integration is used.")
+  vapply(order, 
+         function(i){
+           integrate( 
+             Vectorize(function(x) x^i * dtrunc(x, a = a, b = b, 
+                                                spec = spec, ...)), 
+             lower = a, upper = b
+           )$value
+         },
+         numeric(1))
   }
 }

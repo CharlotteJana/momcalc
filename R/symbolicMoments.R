@@ -106,7 +106,7 @@ symbolicMoments <- function(distribution, missingOrders,
             if(power != 0) 
               bquote(.(cov[[cindexes[[r]][1]]][[cindexes[[r]][2]]])^.(power))
           })
-          factors[sapply(factors, is.null)] <- NULL
+          factors[vapply(factors, is.null, logical(1))] <- NULL
           factors <- Reduce(function(a,b) bquote(.(a)*.(b)), factors)
           momFormula <- append(momFormula,
                                bquote(.(moment$coefficients[j])*.(factors)))
@@ -168,7 +168,7 @@ symbolicMoments <- function(distribution, missingOrders,
       A_indexes <- as.data.frame(t(cbind(utils::combn(1:n, 2), 
                                          matrix(rep(1:n, each = 2), nrow = 2))))
       A <- list()
-      for(r in 1:nrow(A_indexes)){
+      for(r in seq_len(nrow(A_indexes))){
         i <- A_indexes[r, 1]
         j <- A_indexes[r, 2]
         if(i != j){

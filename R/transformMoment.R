@@ -104,14 +104,14 @@ transformMoment <- function(order, type, momentList,
     prodlim::row.match(muRow, momentList$rawMomentOrders)
   })
   mu <- lapply(muRowIndex, function(i) momentList$rawMoments[[i]])
-  if(sum(sapply(mu, is.null)) > 0){
+  if(sum(vapply(mu, is.null, logical(1))) > 0){
     stop("momentList$rawMoments should contain all expected values.")
   }
   
   #### calculation #####
     
   sum <- list()
-  for(k_index in 1:nrow(k_indexes)){
+  for(k_index in seq_len(nrow(k_indexes))){
     
     k <- k_indexes[k_index, ]
     

@@ -74,7 +74,7 @@ dBEGG <- function(x, alpha, beta, delta0, delta1, eta, eps, mu = 0, sigma = 1){
         (eta ^ beta * ((1 + eps) * sigma) ^ (alpha * beta))))
     } 
   }
-  sapply(x, f)
+  vapply(x, f, numeric(1))
 }
 
 #' @describeIn BEGG raw moments

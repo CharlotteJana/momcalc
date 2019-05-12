@@ -87,7 +87,7 @@ test_that("distribution = 'normal' works", {
                           missingOrders = as.matrix(1:8, ncol = 1))
   mom2 <- symbolicMoments(distribution = 'normal', var = 4, simplify = TRUE,
                           missingOrders = as.matrix(1:8, ncol = 1))
-  mom1 <- sapply(mom1, eval)
+  mom1 <- vapply(mom1, eval, numeric(1))
   mom3 <- actuar::mnorm(1:8, mean = 0, sd = 2)
   expect_equal(mom1, mom3)
   expect_equal(mom2, mom3)
@@ -105,7 +105,7 @@ test_that("distribution = 'lognormal' works for n = 1", {
   mom2 <- symbolicMoments(distribution = 'lognormal', 
                           missingOrders = order, 
                           var = var, mean = mean, simplify = FALSE)
-  mom2 <- sapply(mom2, eval)
+  mom2 <- vapply(mom2, eval, numeric(1))
   mom3 <- symbolicMoments(distribution = 'lognormal', 
                           missingOrders = order, 
                           var = var, mean = mean, simplify = TRUE)
