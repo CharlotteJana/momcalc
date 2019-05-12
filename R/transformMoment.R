@@ -54,19 +54,19 @@ transformMoment <- function(order, type, momentList,
   k_in_typeOrders <- k_in_otherOrders <- NULL
 
   # a help function to assign some values:
-  readMoments <- function(momentList, type){ 
+  readMoments <- function(mList, type){ 
     
     if(type == "raw"){
-      assign("typeOrders", momentList$rawMomentOrders, envir = parent.frame())
-      assign("typeMoments", momentList$rawMoments, envir = parent.frame())
-      assign("otherOrders", momentList$centralMomentOrders, envir = parent.frame())
-      assign("otherMoments", momentList$centralMoments, envir = parent.frame())
+      assign("typeOrders", mList$rawMomentOrders, envir = parent.frame())
+      assign("typeMoments", mList$rawMoments, envir = parent.frame())
+      assign("otherOrders", mList$centralMomentOrders, envir = parent.frame())
+      assign("otherMoments", mList$centralMoments, envir = parent.frame())
     }
     if(type == "central"){
-      assign("typeOrders", momentList$centralMomentOrders, envir = parent.frame())
-      assign("typeMoments", momentList$centralMoments, envir = parent.frame())
-      assign("otherOrders", momentList$rawMomentOrders, envir = parent.frame())
-      assign("otherMoments", momentList$rawMoments, envir = parent.frame())
+      assign("typeOrders", mList$centralMomentOrders, envir = parent.frame())
+      assign("typeMoments", mList$centralMoments, envir = parent.frame())
+      assign("otherOrders", mList$rawMomentOrders, envir = parent.frame())
+      assign("otherMoments", mList$rawMoments, envir = parent.frame())
     }
     
     k_in_typeOrders <- apply(k_indexes, 1, function(i){
@@ -84,8 +84,8 @@ transformMoment <- function(order, type, momentList,
   readMoments(momentList, type)
   
   # before calculation: check if calculation is needed
-  if(!is.na(prodlim::row.match(p, typeOrders))) # if there is already an entry in momentList
-    return(momentList)
+  if(!is.na(prodlim::row.match(p, typeOrders))) 
+    return(momentList) # if there is already an entry in momentList
   if(type == "central" & is.na(prodlim::row.match(p, otherOrders))){
     moment <- symbolicMoments(distribution = closure, 
                               missingOrders = t(p),

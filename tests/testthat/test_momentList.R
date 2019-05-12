@@ -58,9 +58,10 @@ test_that("extractCov works for n > 1", {
                       rawMoments = as.list(letters[1:9]), 
                       warnings = FALSE)
   
-  cov <- extractCov(mList)
-  expect_equal(cov, list(list(quote(b^2 * (a - 2) + c), quote (b*d * (a - 2) + e)),
-                         list(quote(b*d * (a - 2) + e), quote (d^2 * (a - 2) + g))))
+  cov1 <- extractCov(mList)
+  cov2 <- list(list(quote(b^2 * (a - 2) + c), quote (b*d * (a - 2) + e)),
+               list(quote(b*d * (a - 2) + e), quote (d^2 * (a - 2) + g)))
+  expect_equal(cov1, cov2)
   
   # with some covariances missing
   mList <- momentList(rawMomentOrders = rbind(c(0, 0),
@@ -101,28 +102,46 @@ test_that("extractCov works for n = 1", {
 test_that("validateMomentlist throws errors", {
   
   expect_error(validate_momentList(new_momentList()))
-  expect_error(validate_momentList(new_momentList(rawMomentOrders = diag(3))))
-  expect_error(validate_momentList(new_momentList(centralMomentOrders = diag(2))))
-  expect_error(validate_momentList(new_momentList(rawMomentOrders = diag(3),
-                                                  rawMoments = list("a"))))
-  expect_error(validate_momentList(new_momentList(centralMoments = list("A"))))
-  expect_error(validate_momentList(new_momentList(rawMomentOrders = diag(2),
-                                                  centralMoments = list("A", "B"))))
-  expect_error(validate_momentList(new_momentList(rawMomentOrders = diag(3),
-                                                  rawMoments = list("a", "b", "c"),
-                                                  centralMomentOrders = diag(2),
-                                                  centralMoments = list("A", "B"))))
-  expect_error(validate_momentList(new_momentList(rawMomentOrders = rbind(diag(2), diag(2)),
-                                                  rawMoments = list("a", "b", "a", "b"))))
-  expect_error(validate_momentList(new_momentList(centralMomentOrders = rbind(diag(2), diag(2)),
-                                                  centralMoments = list("a", "b", "c", "d"))))
+  expect_error(validate_momentList(new_momentList(
+    rawMomentOrders = diag(3)
+    )))
+  expect_error(validate_momentList(new_momentList(
+    centralMomentOrders = diag(2)
+    )))
+  expect_error(validate_momentList(new_momentList(
+    rawMomentOrders = diag(3),
+    rawMoments = list("a")
+    )))
+  expect_error(validate_momentList(new_momentList(
+    centralMoments = list("A")
+    )))
+  expect_error(validate_momentList(new_momentList(
+    rawMomentOrders = diag(2),
+    centralMoments = list("A", "B")
+    )))
+  expect_error(validate_momentList(new_momentList(
+    rawMomentOrders = diag(3),
+    rawMoments = list("a", "b", "c"),
+    centralMomentOrders = diag(2),
+    centralMoments = list("A", "B")
+    )))
+  expect_error(validate_momentList(new_momentList(
+    rawMomentOrders = rbind(diag(2), diag(2)),
+    rawMoments = list("a", "b", "a", "b")
+    )))
+  expect_error(validate_momentList(new_momentList(
+    centralMomentOrders = rbind(diag(2), diag(2)),
+    centralMoments = list("a", "b", "c", "d")
+    )))
 })
 
 test_that("validateMomentlist creates trivial moments", {
   
   
-  mList <- validate_momentList(new_momentList(rawMomentOrders = diag(2),
-                                              rawMoments = list("a", "b")))
+  mList <- validate_momentList(new_momentList(
+    rawMomentOrders = diag(2),
+    rawMoments = list("a", "b")
+    ))
   mList2 <- new_momentList(rawMomentOrders = rbind(c(0, 0), diag(2)),
                            rawMoments = list(1, "a", "b"),
                            centralMomentOrders = rbind(c(0, 0), diag(2)),
@@ -132,18 +151,23 @@ test_that("validateMomentlist creates trivial moments", {
   #-----------------
   
   expect_warning(
-    mList <- validate_momentList(new_momentList(centralMomentOrders = rbind(c(0, 0), c(0, 1)),
-                                                centralMoments = list("a", "b")))
-  )
-  mList2 <- new_momentList(rawMomentOrders = c(0, 0),
-                           rawMoments = list(1),
-                           centralMomentOrders = rbind(c(0, 0), diag(2)),
-                           centralMoments <- list(1, "a", "b"))
+    mList1 <- validate_momentList(new_momentList( #t1 was wird damit gemacht?
+      centralMomentOrders = rbind(c(0, 0), c(0, 1)),
+      centralMoments = list("a", "b")
+  )))
   
-  expect_warning(
-    validate_momentList(new_momentList(rawMomentOrders = rbind(c(0, 0), c(0, 1)),
-                                       rawMoments = list("a", "b")))
+  mList2 <- new_momentList(
+    rawMomentOrders = c(0, 0),
+    rawMoments = list(1),
+    centralMomentOrders = rbind(c(0, 0), diag(2)),
+    centralMoments <- list(1, "a", "b")
   )
+ 
+  expect_warning(
+    validate_momentList(new_momentList(
+      rawMomentOrders = rbind(c(0, 0), c(0, 1)),
+      rawMoments = list("a", "b")
+  )))
   
 })
 

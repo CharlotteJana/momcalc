@@ -129,7 +129,9 @@ symbolicMoments <- function(distribution, missingOrders,
           )
         sigma[[j]][[i]] <- sigma[[i]][[j]]
       }
-      mu[[i]] <- bquote(2*log(.(mean[[i]]))-0.5*log(.(cov[[i]][[i]])+.(mean[[i]])^2))
+      mu[[i]] <- bquote(
+        2*log(.(mean[[i]]))-0.5*log(.(cov[[i]][[i]])+.(mean[[i]])^2)
+      )
     }
     for(i in seq_len(nrow(missingOrders))){
       order <- as.numeric(missingOrders[i, ])
@@ -155,7 +157,9 @@ symbolicMoments <- function(distribution, missingOrders,
       alpha <- bquote(.(mean[[1]])^2/.(cov[[1]][[1]]))
       for(i in seq_len(nrow(missingOrders))){
         order <- as.numeric(missingOrders[i, ])
-        missingMoments[[i]] <- bquote(.(beta)^.(order)*gamma(.(order)+.(alpha))/gamma(.(alpha)))
+        missingMoments[[i]] <- bquote(
+          .(beta)^.(order)*gamma(.(order)+.(alpha))/gamma(.(alpha))
+        )
       }
     }
     else{
@@ -171,7 +175,7 @@ symbolicMoments <- function(distribution, missingOrders,
           A <- append(A, bquote(.(cov[[i]][[j]])/(.(beta[[i]])*.(beta[[j]]))))
         }
         else{
-          sum_indexes <- which(rowSums(apply(A_indexes, 2, match, i, nomatch = 0)) == 1)
+          sum_indexes <- which(rowSums(apply(A_indexes,2,match,i,nomatch = 0)) == 1)
           sum <- Reduce(function(a,b) bquote(.(a)+.(b)), A[sum_indexes])
           A <- append(A, bquote(.(mean[[i]])^2/.(cov[[i]][[i]]) - .(sum)))
         }
@@ -182,7 +186,7 @@ symbolicMoments <- function(distribution, missingOrders,
         order <- as.numeric(missingOrders[i, ])
         polynomials <- list()
         for(j in 1:n){
-          poly_indexes <- rowSums(apply(A_indexes, 2, match, j, nomatch = 0)) >= 1
+          poly_indexes <- rowSums(apply(A_indexes,2,match,j,nomatch = 0)) >= 1
           polynomials <- append(polynomials, 
             list(spray::linear(as.numeric(poly_indexes), 1)^order[j]))
         }

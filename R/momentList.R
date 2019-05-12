@@ -98,8 +98,12 @@ validate_momentList <- function(x, warnings = TRUE){
   
   stopifnot(is.list(x$rawMoments))
   stopifnot(is.list(x$centralMoments))
-  stopifnot(is.matrix(x$rawMomentOrders) | is.data.frame(x$rawMomentOrders) | is.null(x$rawMomentOrders))
-  stopifnot(is.matrix(x$centralMomentOrders) | is.data.frame(x$centralMomentOrders) | is.null(x$centralMomentOrders))
+  stopifnot(is.matrix(x$rawMomentOrders) | 
+            is.data.frame(x$rawMomentOrders) | 
+            is.null(x$rawMomentOrders))
+  stopifnot(is.matrix(x$centralMomentOrders) | 
+            is.data.frame(x$centralMomentOrders) | 
+            is.null(x$centralMomentOrders))
   
   if(length(unique(x$rawMomentOrders)) != length(x$rawMomentOrders)){
     stop("Some rows in 'rawMomentOrders' appear several times. 

@@ -7,8 +7,9 @@ test_that("mtrunc works as expected", {
                    actuar::mlnorm(order = 3, meanlog = 4))
   expect_equal(mtrunc(spec = "norm", order = 1:2, a = -2, b = 2),
                c(0, 0.774), tolerance = 1e-3)
-  expect_error(mtrunc(spec = "unif", order = 1:3, a = 3, b = 1, min = 0, max = 1))
   expect_error(mtrunc(spec = "unif", order = 1:3, a = 3, b = 1))
+  expect_error(mtrunc(spec = "unif", order = 1:3, a = 3, b = 1, 
+                      min = 0, max = 1))
 })
 
 test_that("dtrunc works as expected", {
@@ -35,9 +36,11 @@ test_that("dmix works as expected", {
 })
 
 test_that("mmix works as expected", {
-  expect_identical(mmix(distrib = list(list(spec = "norm", mean = 3)), order = 2),
+  expect_identical(mmix(distrib = list(list(spec = "norm", mean = 3)), 
+                   order = 2),
                    actuar::mnorm(mean = 3, order = 2))
-  expect_identical(mmix(distrib = list(list(spec = "lnorm")), lower = 2, order = 2:5),
+  expect_identical(mmix(distrib = list(list(spec = "lnorm")), 
+                   order = 2:5, lower = 2),
                    mtrunc(order = 2:5, spec = "lnorm", a = 2))
   expect_equal(mmix(distrib = list(list(spec = "unif", min = 0, max = 1-1e-9),
                                    list(spec = "unif", min = 1, max = 2)), 

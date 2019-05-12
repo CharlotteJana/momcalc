@@ -54,7 +54,8 @@ test_that("is.unimodal works with vectorized input", {
   expect_equal(result, c("4-b-unimodal", "not existant"))
   
   # moments as matrix, lower/upper as vectors with length = nrow(moments)
-  moments <- rbind(actuar::mbeta(1:4, 0.5, 0.5), actuar::munif(1:4, min = -10, max = 10))
+  moments <- rbind(actuar::mbeta(1:4, 0.5, 0.5), 
+                   actuar::munif(1:4, min = -10, max = 10))
   result <- is.unimodal(c(0,-10), c(1,10), moments)
   expect_equal(result, c("not unimodal", "4-b-unimodal"))  
   

@@ -1,10 +1,11 @@
 context("transformMoment")
 
-test_that("transformMoment works for n = 3, type = 'raw' and all central moments given", {
+test_that("transformMoment works for n = 3, 
+          type = 'raw' and all central moments given", {
   
   mList <- structure(list(rawMomentOrders = diag(3),
                           rawMoments = list("m1", "m2", "m3"),
-                          centralMomentOrders = expand.grid(list(0:1, 0:1, 0:2)),
+                          centralMomentOrders = expand.grid(list(0:1,0:1,0:2)),
                           centralMoments = as.list(letters[1:12])),
                      class = "momentList")
   
@@ -42,7 +43,8 @@ test_that("transformMoment works for n = 3, type = 'raw' and all central moments
 })
 
 
-test_that("transformMoment works for n = 3, type = 'central' and all raw moments given", {
+test_that("transformMoment works for n = 3, 
+          type = 'central' and all raw moments given", {
   
   mList <- structure(list(rawMomentOrders = expand.grid(list(0:1, 0:1, 0:2)),
                           rawMoments = as.list(letters[1:12]),
@@ -251,7 +253,8 @@ test_that("transformMoment works with only the last moment(s) missing", {
   expect_equal(res2, mList, check.attributes = FALSE)
 })
 
-test_that("transformMoment works with a missing moment in the middle and at the end", {
+test_that("transformMoment works with a missing moment 
+          in the middle and at the end", {
   
   cOrders <- expand.grid(list(0:1, 0:2))
   cOrders <- cOrders[-6, ]
@@ -271,7 +274,7 @@ test_that("transformMoment works with a missing moment in the middle and at the 
                           centralMoments = cMoments),
                      class = "momentList")
   
-  #------- (1,2) missing in cOrders and (1, 1) missing in rOrders, type = 'central' ----------
+  # (1,2) missing in cOrders; (1, 1) missing in rOrders; type = 'central'
   
   res1 <- transformMoment(order = c(1,2),
                           type = 'central',
@@ -300,7 +303,7 @@ test_that("transformMoment works with a missing moment in the middle and at the 
   
   expect_equal(res1, res2, check.attributes = FALSE)
   
-  #------- (1,2) and (1,1) missing in cOrders and (1,1) missing in rOrders, type = 'central' ----------
+  # (1,2) and (1,1) missing in cOrders; (1,1) missing in rOrders; type='central'
   
   cOrders <- matrix(c(0, 0,
                       1, 0,
@@ -318,26 +321,26 @@ test_that("transformMoment works with a missing moment in the middle and at the 
                           simplify = FALSE)
   
   momentRaw <- quote(1 * ("m1"^1 * "m2"^1) * (1) + 
-                       1 * ("m1"^0 * "m2"^1) * (0) + 
-                       1 * ("m1"^1 * "m2"^0) * (0) + 
-                       1 * ("m1"^0 * "m2"^0) * (0))
+                     1 * ("m1"^0 * "m2"^1) * (0) + 
+                     1 * ("m1"^1 * "m2"^0) * (0) + 
+                     1 * ("m1"^0 * "m2"^0) * (0))
   
-  momentCentr <- bquote(-1 * ("m1"^1 * "m2"^2) * (1) + 
-                          1 * ("m1"^0 * "m2"^2) * ("m1") + 
-                          2 * ("m1"^1 * "m2"^1) * ("m2") + 
-                          -2 * ("m1"^0 * "m2"^1) * (.(momentRaw)) + 
-                          -1 * ("m1"^1 * "m2"^0) * ("B") + 
-                          1 * ("m1"^0 * "m2"^0) * ("C"))
+  momentCen <- bquote(-1 * ("m1"^1 * "m2"^2) * (1) + 
+                       1 * ("m1"^0 * "m2"^2) * ("m1") + 
+                       2 * ("m1"^1 * "m2"^1) * ("m2") + 
+                      -2 * ("m1"^0 * "m2"^1) * (.(momentRaw)) + 
+                      -1 * ("m1"^1 * "m2"^0) * ("B") + 
+                       1 * ("m1"^0 * "m2"^0) * ("C"))
   
   res2 <- structure(list(rawMomentOrders = rbind(rOrders, c(1, 1)),
                          rawMoments = append(rMoments, momentRaw),
                          centralMomentOrders = rbind(cOrders, c(1,1), c(1,2)),
-                         centralMoments = append(cMoments, list(0, momentCentr))),
+                         centralMoments = append(cMoments, list(0, momentCen))),
                     class = "momentList")
   
   expect_equal(res1, res2, check.attributes = FALSE)
   
-  #------- (1,1) missing in cOrders and (1, 2) missing in rOrders, type = 'raw' ----------
+  # (1,1) missing in cOrders; (1, 2) missing in rOrders; type = 'raw' 
   
   cOrders <- expand.grid(list(0:1, 0:2))
   cOrders <- cOrders[-4, ]
@@ -377,7 +380,7 @@ test_that("transformMoment works with a missing moment in the middle and at the 
   
   expect_equal(res1, res2, check.attributes = FALSE)
   
-  #------- (1,1) missing in cOrders and (1,1) and (1,2) missing in rOrders, type = 'raw' ----------
+  # (1,1) missing in cOrders; (1,1) and (1,2) missing in rOrders; type = 'raw'
   
   cOrders <- expand.grid(list(0:1, 0:2))
   cOrders <- cOrders[-4, ]
@@ -417,7 +420,7 @@ test_that("transformMoment works with a missing moment in the middle and at the 
 test_that("transformMoment needs raw moments of order 1 as input", {
   mList <- structure(list(rawMomentOrders = 2*diag(3),
                           rawMoments = list("m1", "m2", "m3"),
-                          centralMomentOrders = expand.grid(list(0:1, 0:1, 0:2)),
+                          centralMomentOrders = expand.grid(list(0:1,0:1,0:2)),
                           centralMoments = as.list(letters[1:12])),
                      class = "momentList")
   
