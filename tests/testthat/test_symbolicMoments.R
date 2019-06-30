@@ -1,5 +1,3 @@
-#v1 Warum funktioniert der Test für lognormal, n = 2 nicht?
-
 context("symbolic moments")
 
 test_that("errors are thrown when wrong input", {

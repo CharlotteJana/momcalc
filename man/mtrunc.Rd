@@ -25,5 +25,6 @@ mtrunc(1:6, spec = "norm")
 mtrunc(1:6, spec = "norm", b = 0)
 }
 \seealso{
-\code{\link{dtrunc}} for the probability distribution of a truncated variable.
+\code{\link{dtrunc}} for the probability distribution of a 
+truncated variable.
 }

@@ -36,7 +36,7 @@ dtrunc(x, spec = "norm", a = 1, b = 2)
 curve(dtrunc(x, spec = "norm", a = -Inf, b = 1), -10, 2)
 
 \dontrun{
-# different results for intervals outside the support of the density function:#' 
+# different results for intervals outside the support of the density function: 
 truncdist::dtrunc(x, spec = "norm", a = 20, b = 30) # gives error
 momcalc::dtrunc(x, spec = "norm", a = 20, b = 30) # gives only a warning}
 }

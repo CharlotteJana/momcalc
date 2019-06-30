@@ -162,7 +162,9 @@ test_that("validateMomentlist creates trivial moments", {
     centralMomentOrders = rbind(c(0, 0), diag(2)),
     centralMoments <- list(1, "a", "b")
   )
- 
+  
+  expect_identical(mList1, mList2)
+  
   expect_warning(
     validate_momentList(new_momentList(
       rawMomentOrders = rbind(c(0, 0), c(0, 1)),

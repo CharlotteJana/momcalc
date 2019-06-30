@@ -45,7 +45,7 @@
 #' x <- seq(-2.5, 1.5, .01)
 #' y <- dBEGG(x, alpha = 3, beta = 2, delta0 = 4, delta1 = 2, eta = 2, eps = 0.3)
 #' plot(x, y, type = "l", ylab = "")
-#' x <- seq(-2, 2, .01)
+#' x <- seq(-4, 2, .01)
 #' y <- dBEGG(x, alpha = 2, beta = 1, delta0 = 0, delta1 = 0, eta = 1, eps = 0.7)
 #' plot(x, y, type = "l", ylab = "")
 #'

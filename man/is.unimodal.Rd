@@ -44,9 +44,10 @@ moments up to order 2 is called \emph{2-b-unimodal}. A distribution that
 satisfies all inequalities that contain only moments up to order 4 is called
 \emph{4-b-unimodal}. The internal methods \code{is.2_b_unimodal} and
 \code{is.4_b_unimodal} test these inequalities. Method \code{is.unimodal}
-performs these checks, depending on the number of given distributions. A
-2-b- or 4-b-unimodal distribution can still be nonunimodal (see the examples below).
-But a failure of these tests assures the distribution not to be unimodal.
+performs these checks, depending on the number of given moments. It is possible 
+that a multimodal distribution satisfies all inequalities and is therefore 2- 
+and even 4-bimodal (see the examples below). But if at least one of the 
+inequalities is not satisfied, the distribution cannot be unimodal.
 }
 \examples{
 ### mixture of two normal distributions ###
