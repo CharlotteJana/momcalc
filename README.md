@@ -100,12 +100,12 @@ Let *X* be a (possible multivariate) random variable and *Y* the corresponding c
 
 In this case, set argument `type = 'raw'`. Then function `transformMoment` returns
 
-$$E(X^p) = \\sum\_{k\_1=0}^{p\_1}...\\sum\_{k\_n=0}^{p\_n} {p \\choose k} \\mu^{p-k} E(Y^k)~.$$
+<!-- E(X^p) = \sum_{k_1=0}^{p_1}...\sum_{k_n=0}^{p_n} {p \choose k} \mu^{p-k} E(Y^k)~. -->
+![](https://raw.githubusercontent.com/CharlotteJana/momcalc/master/man/figures/README_transform_raw.png)
 
 #### Transformation from raw to central
 
-In this case, set argument `type = 'central'`. Then function `transformMoment` returns
-$$E(Y^p) = \\sum\_{k\_1=0}^{p\_1}...\\sum\_{k\_n=0}^{p\_n} (-1)^{p-k} {p \\choose k} \\mu^{p-k} E(X^k)~.$$
+In this case, set argument `type = 'central'`. Then function `transformMoment` returns <!-- E(Y^p) = \sum_{k_1=0}^{p_1}...\sum_{k_n=0}^{p_n} (-1)^{p-k} {p \choose k} \mu^{p-k} E(X^k)~. --> ![](https://raw.githubusercontent.com/CharlotteJana/momcalc/master/man/figures/README_transform_central.png)
 
 #### Class momentList
 
@@ -159,7 +159,7 @@ The *bimodal extension of the generalized Gamma-Distribution* (BEGG) was first i
 
 -   Bulut, Y. M., & Arslan, O. (2015). [A bimodal extension of the generalized gamma distribution](https://www.researchgate.net/publication/280136422_A_Bimodal_Extension_of_the_Generalized_Gamma_Distribution). *Revista Colombiana de Estadística*, 38(2), 371-384.
 
-It is a scale mixture of the generalized gamma distribution that is almost always bimodal. The two modes can have different shapes, depending on the parameters *α*, *β*, *δ*<sub>0</sub>, *δ*<sub>1</sub>, *η*, *ε*, *μ* and *σ*.
+It is a scale mixture of the generalized gamma distribution that is almost always bimodal. The two modes can have different shapes, depending on the parameters *α*, *β*, *δ*<sub>0</sub>, *δ*<sub>1</sub>, *η*, *ϵ*, *μ* and *σ*.
 
 The density function can be calculated with `dBEGG` and is given by
 
@@ -167,12 +167,12 @@ The density function can be calculated with `dBEGG` and is given by
 <!--       \frac{\alpha\beta}{2\eta^\frac{\delta_1+1}{\alpha}(1+\epsilon)^{\delta_1}\Gamma\left(\frac{\delta_1+1}{\alpha\beta}\right)}~(-x)^{\delta_1}~e^{-\frac{(-x)^{\alpha\beta}}{\eta^\beta(1+\epsilon)^{\alpha\beta}}}~~~~ &if~x<0\\ -->
 <!--       \frac{\alpha\beta}{2\eta^\frac{\delta_0+1}{\alpha}(1-\epsilon)^{\delta_0}\Gamma\left(\frac{\delta_0+1}{\alpha\beta}\right)}~x^{\delta_0}~e^{-\frac{x^{\alpha\beta}}{\eta^\beta(1-\epsilon)^{\alpha\beta}}}~~~~ &if~x\ge0\\ -->
 <!-- \end{cases}  -->
-![](https://raw.githubusercontent.com/CharlotteJana/pdmpsim/charlotte/man/figures/README_BEGG_density.png)
+![](https://raw.githubusercontent.com/CharlotteJana/momcalc/master/man/figures/README_BEGG_density.png)
 
 The k-th raw moment can be calculated with `mBEGG` and is given by
 
 <!-- E(X^k) = \frac{(-1)^k\eta^{\frac{k}{\alpha}}(1+\epsilon)^{k+1}}{2}~\frac{\Gamma\left(\frac{\delta_1+k+1}{\alpha\beta}\right)}{\Gamma\left(\frac{\delta_1+1}{\alpha\beta}\right)}~+~\frac{\eta^{\frac{k}{\alpha}}(1-\epsilon)^{k+1}}{2}~\frac{\Gamma\left(\frac{\delta_0+k+1}{\alpha\beta}\right)}{\Gamma\left(\frac{\delta_0+1}{\alpha\beta}\right)} -->
-![](https://raw.githubusercontent.com/CharlotteJana/pdmpsim/charlotte/man/figures/README_BEGG_moments.png)
+![](https://raw.githubusercontent.com/CharlotteJana/momcalc/master/man/figures/README_BEGG_moments.png)
 
 The density function can have very different shapes: ![](man/figures/README-unnamed-chunk-5-1.png)
 
