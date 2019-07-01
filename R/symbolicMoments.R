@@ -1,6 +1,7 @@
 #t2 lognormal: überprüfen, ob mean wohldefiniert
 #v1 was passiert bei falschen werten für mean, cov bei gamma?
 #t1 References: LakatosCo2015
+#t2 DESCRIPTION: Englisch korrigieren
 
 #' Symbolic calculation of moments
 #'
@@ -41,6 +42,7 @@
 #' \deqn{\texttt{mean[i]} > \sum_{k \neq i} \frac{mean[k]\cdot cov[i,k]}{cov[i,i]}}{
 #' mean[i] > sum_(k != i) mean[k]*cov[i,k]/cov[i,i]}
 #' should be satisfied for all i in 1:n.
+#' @example inst/examples/symbolicMoments.R
 #' @importFrom symmoments callmultmoments
 #' @importFrom stringr str_extract_all str_remove_all
 #' @importFrom spray linear

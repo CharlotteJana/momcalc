@@ -19,7 +19,7 @@ library(momcalc)
 
 # Introduction
 
-Package `momcalc` includes different functions to *calculate moments* of some distributions. It is possible to calculate the moments of a normal, lognormal or gamma distribution symbolically. These distributions may be multivariate. The distribution or moments of the [BEGG distribution][BEGG] can be calculated numerically.
+Package `momcalc` includes different functions to *calculate moments* of some distributions. It is possible to calculate the moments of a normal, lognormal or gamma distribution symbolically. These distributions may be multivariate. The distribution or moments of the [BEGG distribution][BEGG] can be calculated numerically. Raw moments can be transformed into central moments and vice versa.
 The package also provides a test concerning the modality of a distribution. It tests, if a one dimensional distribution with compact support can be unimodal and is based on the moments of that distribution.
 
 You can install `momcalc` from github with:
@@ -30,6 +30,47 @@ devtools::install_github("CharlotteJana/momcalc")
 ```
 
 # Symbolical calculation of moments
+
+Function `symbolicMoments` calculates the moments of a distribution symbolically, meaning that it handles the input as quoted expression. It can not only work with numbers as input but with any given expression.
+
+The distribution may be multivariate and of some of the following types: normal, lognormal or gamma. The type is specified with the argument `distribution`.
+For `distribution = normal`, central moments are calculated. In the other cases, function `symbolicMoments` returns raw moments.
+
+```{r}
+# raw moments of a one dimensional gamma distribution
+symbolicMoments(distribution = "gamma", missingOrders = as.matrix(1:3, ncol = 1),
+                mean = "μ", var = "σ")
+
+# raw moments of a one dimensional lognormal distribution
+symbolicMoments(distribution = "lognormal", missingOrders = as.matrix(1:2, ncol = 1),
+                mean = 2, var = 1, simplify = FALSE)
+
+# evaluate the result
+symbolicMoments(distribution = "lognormal", missingOrders = as.matrix(1:2, ncol = 1),
+                mean = 2, var = 1, simplify = TRUE)
+```
+
+Note that the calculation in case of a *normal* distribution is done with function `callmultmoments` of package [symmoments](https://cran.r-project.org/web/packages/symmoments/index.html).
+The following example can be found on [Wikipedia](https://en.wikipedia.org/wiki/Multivariate_normal_distribution#Higher_moments):
+
+```{r}
+missingOrders <- matrix(c(4, 0, 0, 0,
+                          3, 1, 0, 0,
+                          2, 2, 0, 0,
+                          2, 1, 1, 0,
+                          1, 1, 1, 1), ncol = 4, byrow = TRUE)
+
+cov <-  matrix(c("σ11", "σ12", "σ13", "σ14", 
+                 "σ12", "σ22", "σ23", "σ24", 
+                 "σ13", "σ23", "σ33", "σ34", 
+                 "σ14", "σ24", "σ34", "σ44"), ncol = 4, byrow = TRUE)
+
+symbolicMoments("normal", missingOrders, mean = "μ", cov = cov)
+```
+
+
+
+# Symbolical transformation of moments
 
 # The BEGG distribution
 

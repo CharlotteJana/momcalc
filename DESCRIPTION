@@ -5,7 +5,8 @@ Version: 0.0-1
 Author: Charlotte Jana
 Maintainer: Charlotte Jana <charlotte.jana@t-online.de>
 Description: Symbolically caculate the moments of a normal, lognormal or gamma 
-    distribution, which may be multivariate. Numerically calculate the 
+    distribution, which may be multivariate. Symbolically transform raw moments
+    into central moments and vice versa. Numerically calculate the 
     distribution or moments of the BEGG distribution. Test a one dimensional 
     distribution with compact support if it is unimodal. The test is based on 
     the moments of that distribution.

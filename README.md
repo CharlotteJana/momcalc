@@ -10,7 +10,8 @@ some distributions. It is possible to calculate the moments of a normal,
 lognormal or gamma distribution symbolically. These distributions may be
 multivariate. The distribution or moments of the [BEGG
 distribution](https://www.researchgate.net/publication/280136422_A_Bimodal_Extension_of_the_Generalized_Gamma_Distribution)
-can be calculated numerically. The package also provides a test
+can be calculated numerically. Raw moments can be transformed into
+central moments and vice versa. The package also provides a test
 concerning the modality of a distribution. It tests, if a one
 dimensional distribution with compact support can be unimodal and is
 based on the moments of that distribution.
@@ -23,6 +24,83 @@ devtools::install_github("CharlotteJana/momcalc")
 ```
 
 # Symbolical calculation of moments
+
+Function `symbolicMoments` calculates the moments of a distribution
+symbolically, meaning that it handles the input as quoted expression. It
+can not only work with numbers as input but with any given expression.
+
+The distribution may be multivariate and of some of the following types:
+normal, lognormal or gamma. The type is specified with the argument
+`distribution`. For `distribution = normal`, central moments are
+calculated. In the other cases, function `symbolicMoments` returns raw
+moments.
+
+``` r
+# raw moments of a one dimensional gamma distribution
+symbolicMoments(distribution = "gamma", missingOrders = as.matrix(1:3, ncol = 1),
+                mean = "μ", var = "σ")
+#> [[1]]
+#> σ * gamma(1 + μ^2/σ)/(μ * gamma(μ^2/σ))
+#> 
+#> [[2]]
+#> gamma(2 + μ^2/σ) * (σ/μ)^2/gamma(μ^2/σ)
+#> 
+#> [[3]]
+#> gamma(3 + μ^2/σ) * (σ/μ)^3/gamma(μ^2/σ)
+
+# raw moments of a one dimensional lognormal distribution
+symbolicMoments(distribution = "lognormal", missingOrders = as.matrix(1:2, ncol = 1),
+                mean = 2, var = 1, simplify = FALSE)
+#> [[1]]
+#> exp(1 * (2 * log(2) - 0.5 * log(1 + 2^2)) + 0.5 * (1^2 * (log(1 + 
+#>     2 * 2) - log(2) - log(2))))
+#> 
+#> [[2]]
+#> exp(2 * (2 * log(2) - 0.5 * log(1 + 2^2)) + 0.5 * (2^2 * (log(1 + 
+#>     2 * 2) - log(2) - log(2))))
+
+# evaluate the result
+symbolicMoments(distribution = "lognormal", missingOrders = as.matrix(1:2, ncol = 1),
+                mean = 2, var = 1, simplify = TRUE)
+#> [1] 2 5
+```
+
+Note that the calculation in case of a *normal* distribution is done
+with function `callmultmoments` of package
+[symmoments](https://cran.r-project.org/web/packages/symmoments/index.html).
+The following example can be found on
+[Wikipedia](https://en.wikipedia.org/wiki/Multivariate_normal_distribution#Higher_moments):
+
+``` r
+missingOrders <- matrix(c(4, 0, 0, 0,
+                          3, 1, 0, 0,
+                          2, 2, 0, 0,
+                          2, 1, 1, 0,
+                          1, 1, 1, 1), ncol = 4, byrow = TRUE)
+
+cov <-  matrix(c("σ11", "σ12", "σ13", "σ14", 
+                 "σ12", "σ22", "σ23", "σ24", 
+                 "σ13", "σ23", "σ33", "σ34", 
+                 "σ14", "σ24", "σ34", "σ44"), ncol = 4, byrow = TRUE)
+
+symbolicMoments("normal", missingOrders, mean = "μ", cov = cov)
+#> [[1]]
+#> 3 * σ11^2
+#> 
+#> [[2]]
+#> 3 * (σ11 * σ12)
+#> 
+#> [[3]]
+#> 2 * σ12^2 + σ11 * σ22
+#> 
+#> [[4]]
+#> 2 * (σ12 * σ13) + σ11 * σ23
+#> 
+#> [[5]]
+#> σ12 * σ34 + σ13 * σ24 + σ14 * σ23
+```
+
+# Symbolical transformation of moments
 
 # The BEGG distribution
 
@@ -50,7 +128,7 @@ The k-th raw moment is given by \[
 E(X^k) = \frac{(-1)^kη^{k/α}(1+ε)^{k+1}}{2}~\frac{Γ(\frac{δ₁+k+1}{αβ})}{Γ(\frac{δ₁+1}{αβ})}~+~\frac{η^{k/α}(1-ε)^{k+1}}{2}~\frac{Γ(\frac{δ₀+k+1}{αβ})}{Γ(\frac{δ₀+1}{αβ})}
 \] and can be calculated with `mBEGG`.
 
-![](man/figures/README-unnamed-chunk-2-1.png)<!-- -->
+![](man/figures/README-unnamed-chunk-4-1.png)<!-- -->
 
 # Test if a distribution is unimodal
 
