@@ -102,6 +102,81 @@ symbolicMoments("normal", missingOrders, mean = "μ", cov = cov)
 
 # Symbolical transformation of moments
 
+Function `transformMoment` symbolically transforms raw moments into
+central moments and vice versa. It allows the moments to come from a
+multivariate distribution.
+
+Let \(X\) be a (possible multivariate) random variable and \(Y\) the
+corresponding centered variable, i.e. \(Y = X - μ\). Let
+\(p = (p_1, ..., p_n)\) be the order of the desired moment.
+
+#### Transformation from central into raw
+
+In this case, set argument `type = 'raw'`. Then function
+`transformMoment` returns
+\[E(X^p) = \sum_{k_1=0}^{p_1}...\sum_{k_n=0}^{p_n} {p \choose k} \mu^{p-k} E(Y^k)~.\]
+
+#### Transformation from raw to central
+
+In this case, set argument `type = 'central'`. Then function
+`transformMoment` returns
+\[E(Y^p) = \sum_{k_1=0}^{p_1}...\sum_{k_n=0}^{p_n} (-1)^{p-k} {p \choose k} \mu^{p-k} E(X^k)~.\]
+\#\#\#\# Class momentList
+
+Function `transformMoment` needs as input an S3-object of class
+`momentList` which contains all known central and raw moments. It has
+four elements: Element `centralMoments` contains all known central
+moments of the distribution, where as `rawMoments` contains all raw
+moments of the distribution. Both are stored as list. The elements
+`centralMomentOrders` and `rawMomentOrders` contain the corresponding
+orders of the moments. They are stored as matrix or data.frame, each row
+represents one order of the moment. The number of columns of these
+matrices should be equal to the dimension of the distribution.
+
+The function returns an oject of class `momentList` which is expanded
+and includes the wanted moment and all moments that were computed during
+the calculation process.
+
+#### Example
+
+Calculate the raw moment \(E(X_1X_2X_3^2)\) for a three-dimensional
+random variable \(X\):
+
+``` r
+mList <- momentList(rawMomentOrders = diag(3),
+                    rawMoments = list("m1", "m2", "m3"),
+                    centralMomentOrders = expand.grid(list(0:1,0:1,0:2)),
+                    centralMoments = as.list(c(1, 0, 0, "a", 0, letters[2:8])))
+
+mList <- transformMoment(order = c(1,1,2), type = 'raw', 
+                         momentList = mList, simplify = TRUE)
+
+mList$rawMomentOrders
+#>   [,1] [,2] [,3]
+#>      0    0    0
+#>      1    0    0
+#>      0    1    0
+#>      0    0    1
+#> p    1    1    2
+
+mList$rawMoments
+#> [[1]]
+#> [1] 1
+#> 
+#> [[2]]
+#> [1] "m1"
+#> 
+#> [[3]]
+#> [1] "m2"
+#> 
+#> [[4]]
+#> [1] "m3"
+#> 
+#> [[5]]
+#> g * m1 + h + m2 * (e * m1 + f) + m3 * (2 * (b * m2) + 2 * (c * 
+#>     m1) + 2 * d + m3 * (a + m1 * m2))
+```
+
 # The BEGG distribution
 
 The *bimodal extension of the generalized Gamma-Distribution* (BEGG) was
@@ -128,7 +203,7 @@ The k-th raw moment is given by \[
 E(X^k) = \frac{(-1)^kη^{k/α}(1+ε)^{k+1}}{2}~\frac{Γ(\frac{δ₁+k+1}{αβ})}{Γ(\frac{δ₁+1}{αβ})}~+~\frac{η^{k/α}(1-ε)^{k+1}}{2}~\frac{Γ(\frac{δ₀+k+1}{αβ})}{Γ(\frac{δ₀+1}{αβ})}
 \] and can be calculated with `mBEGG`.
 
-![](man/figures/README-unnamed-chunk-4-1.png)<!-- -->
+![](man/figures/README-unnamed-chunk-5-1.png)<!-- -->
 
 # Test if a distribution is unimodal
 

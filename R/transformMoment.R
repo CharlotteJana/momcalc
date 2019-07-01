@@ -27,7 +27,7 @@
 #'   \item \code{rawMoment[[i]]}, if \code{k} = \code{rawMomentOrders[i, ]}
 #'   \item \code{\link{transformMoment}(type = 'raw', ...)}, if \code{k} is not a row in \code{rawMomentOrders}
 #' }
-#' 
+#' @example inst/examples/transformMoment.R
 #' @return This function returns an object of class 'momentList'.
 #' @aliases transformmoment
 #' @param order numeric vector giving the order of the desired moment.
