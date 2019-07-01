@@ -84,6 +84,7 @@ In this case, set argument `type = 'raw'`. Then function `transformMoment` retur
 #### Transformation from raw to central
 
 In this case, set argument `type = 'central'`. Then function `transformMoment` returns
+
 <!-- E(Y^p) = \sum_{k_1=0}^{p_1}...\sum_{k_n=0}^{p_n} (-1)^{p-k} {p \choose k} \mu^{p-k} E(X^k)~. -->
 ![](https://raw.githubusercontent.com/CharlotteJana/momcalc/master/man/figures/README_transform_central.png)
 
