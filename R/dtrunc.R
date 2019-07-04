@@ -2,9 +2,13 @@
 #v1 Zur Dokumentation von dtrunc: Zitat aus http://r-pkgs.had.co.nz/check.html
 # "If the licenses are compatible you can copy and paste the exported function 
 #  into your own package. If you do this, remember to update Authors@R."
+#  Zitat aus https://cran.r-project.org/doc/manuals/r-release/R-exts.html:
+# "Note that all significant contributors must be included: if you wrote an R wrapper 
+#  for the work of others included in the src directory, you are not the sole 
+#  (and maybe not even the main) author"
+# siehe auch https://www.reddit.com/r/learnprogramming/comments/2k30yt/how_do_i_properly_citegive_credit_for_code_used/
 #t1 Die Argumente upper, a, lower, b einheitlich verwenden!
 #t1 Brauche ich dtrunc wirklich? (mtrunc gibt es in truncdist nicht!)
-#t1 vielleicht fehler testen und dann durch Nullen ersetzen?
 
 #------ dtrunc & mtrunc ----------
 
@@ -33,6 +37,8 @@ dtrunc <- function (x, spec, a = -Inf, b = Inf, ...) {
   tt <- rep(0, length(x))
   g <- get(paste("d", spec, sep = ""), mode = "function")
   G <- get(paste("p", spec, sep = ""), mode = "function")
+  print(g)
+  print(G)
   if(G(b, ...)-G(a, ...) != 0){ # additional to truncdist::dtrunc
     tt[x >= a & x <= b] <- g(x[x >= a & x <= b], ...)/(G(b, ...) - G(a, ...))
   }

@@ -21,7 +21,7 @@ test_that("dtrunc works as expected", {
                    2*exp(-x*2)/(1-exp(-10)))
   expect_warning(d <- dtrunc(x, spec = "norm", a = 20, b = 30))
   expect_identical(d, rep(0, length(x)))
-  expect_error(dtrunc(x, sepec = "unif", a = 30, b = 0))
+  expect_error(dtrunc(x, spec = "unif", a = 30, b = 0))
 })
 
 test_that("dmix works as expected", {

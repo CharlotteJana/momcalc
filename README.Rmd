@@ -194,7 +194,7 @@ is.unimodal(-4, 2, example4)
 
 # License
 
-Package `momcalc` is free open source software licensed under the [GNU Public License](https://www.gnu.org/licenses/#GPL) (GPL 2.0 or above). The software is provided as is and comes WITHOUT WARRANTY.
+Function `dtrunc` of package `momcalc` is a modified version of function `dtrunc` of package [truncdist](https://cran.r-project.org/web/packages/truncdist/index.html). Both packages are free open source software licensed under the [GNU Public License](https://www.gnu.org/licenses/#GPL) (GPL 2.0 or above). The software is provided as is and comes WITHOUT WARRANTY.
 
 
 [BEGG]: https://www.researchgate.net/publication/280136422_A_Bimodal_Extension_of_the_Generalized_Gamma_Distribution
