@@ -5,10 +5,11 @@ Package momcalc
 
 # Introduction
 
-Package `momcalc` includes different functions to *calculate moments* of
-some distributions. It is possible to calculate the moments of a normal,
-lognormal or gamma distribution symbolically. These distributions may be
-multivariate. The distribution or moments of the [BEGG
+The package `momcalc` includes different functions to *calculate
+moments* of some distributions. It is possible to calculate the moments
+of a normal, lognormal or gamma distribution symbolically. These
+distributions may be multivariate. The distribution or moments of the
+[BEGG
 distribution](https://www.researchgate.net/publication/280136422_A_Bimodal_Extension_of_the_Generalized_Gamma_Distribution)
 can be calculated numerically. Raw moments can be transformed into
 central moments and vice versa. The package also provides a test
@@ -23,11 +24,12 @@ You can install `momcalc` from GitHub with:
 devtools::install_github("CharlotteJana/momcalc")
 ```
 
-# Symbolical calculation of moments
+# Symbolic calculation of moments
 
-Function `symbolicMoments` calculates the moments of a distribution
-symbolically, meaning that it handles the input as quoted expression. It
-can not only work with numbers as input but with any given expression.
+The function `symbolicMoments` calculates the moments of a distribution
+symbolically, meaning that it handles the input as quoted expressions.
+It can not only work with numbers as input but with any given
+expression.
 
 The distribution may be multivariate and of some of the following types:
 normal, lognormal or gamma. The type is specified with the argument
@@ -66,7 +68,7 @@ symbolicMoments(distribution = "lognormal", missingOrders = as.matrix(1:2, ncol 
 ```
 
 Note that the calculation in case of a *normal* distribution is done
-with function `callmultmoments` of package
+with the function `callmultmoments` of the package
 [symmoments](https://cran.r-project.org/web/packages/symmoments/index.html).
 The following example can be found on
 [Wikipedia](https://en.wikipedia.org/wiki/Multivariate_normal_distribution#Higher_moments):
@@ -100,9 +102,9 @@ symbolicMoments("normal", missingOrders, mean = "μ", cov = cov)
 #> σ12 * σ34 + σ13 * σ24 + σ14 * σ23
 ```
 
-# Symbolical transformation of moments
+# Symbolic transformation of moments
 
-Function `transformMoment` symbolically transforms raw moments into
+The function `transformMoment` symbolically transforms raw moments into
 central moments and vice versa. It allows the moments to come from a
 multivariate distribution.
 
@@ -132,14 +134,14 @@ returns
 
 #### Class momentList
 
-Function `transformMoment` needs as input an S3-object of class
+The function `transformMoment` needs as input an S3-object of the class
 `momentList` which contains all known central and raw moments. It has
-four elements: Element `centralMoments` contains all known central
+four elements: The element `centralMoments` contains all known central
 moments of the distribution, where as `rawMoments` contains all raw
-moments of the distribution. Both are stored as list. The elements
+moments of the distribution. Both are stored as a list. The elements
 `centralMomentOrders` and `rawMomentOrders` contain the corresponding
-orders of the moments. They are stored as matrix or data.frame, each row
-represents one order of the moment. The number of columns of these
+orders of the moments. They are stored as a matrix or data.frame, each
+row represents one order of the moment. The number of columns of these
 matrices should be equal to the dimension of the distribution.
 
 The function returns an object of class `momentList` which is expanded
@@ -196,10 +198,10 @@ first introduced in
     distribution](https://www.researchgate.net/publication/280136422_A_Bimodal_Extension_of_the_Generalized_Gamma_Distribution).
     *Revista Colombiana de Estadística*, 38(2), 371-384.
 
-It is a scale mixture of the generalized gamma distribution that is
-almost always bimodal. The two modes can have different shapes,
-depending on the parameters \(α\), \(β\), \(δ_0\), \(δ_1\), \(η\),
-\(\epsilon\), \(μ\) and \(σ\).
+It is a scale mixture of the generalized gamma distribution. The BEGG
+distribution is almost always bimodal. The two modes can have different
+shapes, depending on the parameters \(α\), \(β\), \(δ_0\), \(δ_1\),
+\(η\), \(\epsilon\), \(μ\) and \(σ\).
 
 The density function can be calculated with `dBEGG` and is given
 by
@@ -224,10 +226,10 @@ by
 The density function can have very different shapes:
 ![](man/figures/README-unnamed-chunk-5-1.png)<!-- -->
 
-# Test if a distribution is unimodal
+# Testing if a distribution is unimodal
 
-Function `is.unimoal` checks if an (unknown) distribution with compact
-support can be unimodal. It uses several inequalities that were
+The function `is.unimoal` checks if an (unknown) distribution with
+compact support can be unimodal. It uses several inequalities that were
 introduced in
 
   - Teuscher, F., & Guiard, V. (1995). [Sharp inequalities between
@@ -250,7 +252,7 @@ all inequalities that contain only moments up to order 4 is called
 **4-b-unimodal**. It is possible that a multimodal distribution
 satisfies all inequalities and is therefore 2- and even 4-bimodal. But
 if at least one of the inequalities is not satisfied, the distribution
-cannot be unimodal. In this case, the test returns `not unimodal` as
+cannot be unimodal. In this case, the test returns `not unimodal` as the
 result.
 
 Here are some examples using the BEGG distribution:
@@ -281,8 +283,8 @@ is.unimodal(-4, 2, example4)
 
 # License
 
-Function `dtrunc` of package `momcalc` is a modified version of function
-`dtrunc` of package
+The function `dtrunc` of the package `momcalc` is a modified version of
+the function `dtrunc` of the package
 [truncdist](https://cran.r-project.org/web/packages/truncdist/index.html).
 Both packages are free open source software licensed under the [GNU
 Public License](https://www.gnu.org/licenses/#GPL) (GPL 2.0 or above).
