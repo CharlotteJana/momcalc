@@ -95,8 +95,8 @@ test_that("extractCov works for n = 1", {
                       centralMoments = list(1, 0),
                       warnings = FALSE)
 
-  cov <- extractCov(mList)
-  expect_equal(cov, list(list(quote(B + m1^2 * (A - 2)))))
+  expect_warning(cov <- extractCov(mList))
+  expect_equal(cov, list(list(quote(B - m1^2))))
 })
 
 test_that("validateMomentlist throws errors", {
@@ -166,11 +166,19 @@ test_that("validateMomentlist creates trivial moments", {
   expect_identical(mList1, mList2)
   
   expect_warning(
-    validate_momentList(new_momentList(
+    mList3 <- validate_momentList(new_momentList(
       rawMomentOrders = rbind(c(0, 0), c(0, 1)),
       rawMoments = list("a", "b")
-  )))
+  ), warnings = TRUE, replace = TRUE))
   
+  mList4 <- new_momentList(
+    rawMomentOrders = rbind(c(0, 0), c(0, 1)),
+    rawMoments = list(1, "b"),
+    centralMomentOrders = rbind(c(0, 0), diag(2)),
+    centralMoments <- list(1, 0, 0)
+  )
+  
+  expect_identical(mList3, mList4)
 })
 
 test_that("momentList works as expected", {

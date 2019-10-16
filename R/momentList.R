@@ -32,7 +32,6 @@
 #' @param centralMoments list. The i-th entry is the central Moment of order \code{centralMomentOrders[i, ]}.
 #' @param rawMomentOrders matrix or data.frame. Every row gives the order of a raw moment that is already known.
 #' @param rawMoments list. The i-th entry is the raw Moment of order \code{rawMomentOrders[i, ]}.
-#' @param warnings bool. If FALSE, warnings about moments of order 0 and 1 will be suppressed.
 #' @param x object of class \code{momentList}
 #' @param ... additional arguments to function mean. They are currently not used.
 #' @name momentList
@@ -62,7 +61,8 @@ momentList <- function(rawMomentOrders = NULL,
                        rawMoments = list(),
                        centralMomentOrders = NULL,
                        centralMoments = list(), 
-                       warnings = TRUE){
+                       warnings = TRUE,
+                       replace = FALSE){
   
   if(is.null(rawMomentOrders) & is.null(centralMomentOrders))
     stop("Please provide either values for 'rawMomentOrders' and 'rawMoments'
@@ -83,14 +83,18 @@ momentList <- function(rawMomentOrders = NULL,
                           centralMomentOrders = centralMomentOrders,
                           centralMoments = centralMoments)
   
-  return(validate_momentList(mList, warnings))
+  return(validate_momentList(mList, warnings = warnings, replace = replace))
 }
 
 ####### validate_momentList ######
 
 #' @rdname momentList 
+#' @param warnings bool. If FALSE, warnings about moments of order 0 
+#' and 1 will be suppressed.
+#' @param replace bool. If TRUE, inconvenient values of moments of 
+#' order 0 and 1 will be replaced by convenient ones.
 #' @export
-validate_momentList <- function(x, warnings = TRUE){
+validate_momentList <- function(x, warnings = TRUE, replace = FALSE){
   
   if(is.null(x$rawMomentOrders) & is.null(x$centralMomentOrders))
     stop("Please provide either values for 'rawMomentOrders' and 'rawMoments'
@@ -147,6 +151,8 @@ validate_momentList <- function(x, warnings = TRUE){
     if(!is.na(rowIndex)){
       if(x$centralMoments[[rowIndex]] != 0 & warnings) 
         warning("Central moments of order 1 should be 0.")
+      if(x$centralMoments[[rowIndex]] != 0 & replace)
+        x$centralMoments[[rowIndex]] <- 0
     }
     else{
       x$centralMomentOrders <- rbind(unitVector, x$centralMomentOrders)
@@ -167,10 +173,14 @@ validate_momentList <- function(x, warnings = TRUE){
   if(!is.na(indexRaw)){
     if(x$rawMoments[[indexRaw]] != 1 & warnings)
       warning("Moments of order 0 should have value 1.")
+    if(x$rawMoments[[indexRaw]] != 1 & replace)
+      x$rawMoments[[indexRaw]] <- 1
   }
   if(!is.na(indexCentr)){
     if(x$centralMoments[[indexCentr]] != 1 & warnings)
       warning("Moments of order 0 should have value 1.")
+    if(x$centralMoments[[indexCentr]] != 1 & replace)
+      x$centralMoments[[indexCentr]] <- 1
   }
   if(is.na(indexRaw)){
     x$rawMomentOrders <- rbind(rep(0, n), x$rawMomentOrders)
@@ -218,6 +228,8 @@ extractCov <- function(x){
   n <- ifelse(length(x$centralMoments) > 0, 
               ncol(x$centralMomentOrders), 
               ncol(x$rawMomentOrders))
+  
+  x <- validate_momentList(x, replace = TRUE)
  
   covOrder <- expand.grid(lapply(1:n, function(i) 0:2))
   covOrder <- covOrder[which(rowSums(covOrder) == 2),]

@@ -16,9 +16,9 @@ new_momentList(rawMomentOrders = NULL, rawMoments = list(),
 
 momentList(rawMomentOrders = NULL, rawMoments = list(),
   centralMomentOrders = NULL, centralMoments = list(),
-  warnings = TRUE)
+  warnings = TRUE, replace = FALSE)
 
-validate_momentList(x, warnings = TRUE)
+validate_momentList(x, warnings = TRUE, replace = FALSE)
 
 extractMean(x, ...)
 
@@ -33,7 +33,11 @@ extractCov(x)
 
 \item{centralMoments}{list. The i-th entry is the central Moment of order \code{centralMomentOrders[i, ]}.}
 
-\item{warnings}{bool. If FALSE, warnings about moments of order 0 and 1 will be suppressed.}
+\item{warnings}{bool. If FALSE, warnings about moments of order 0 
+and 1 will be suppressed.}
+
+\item{replace}{bool. If TRUE, inconvenient values of moments of 
+order 0 and 1 will be replaced by convenient ones.}
 
 \item{x}{object of class \code{momentList}}
 
